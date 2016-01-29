@@ -1,0 +1,16 @@
+<?php
+$settings = $this->helper('PCAPredict\Tag\Helper\SettingsData');
+$accCode = $settings->getAccountCode();
+$sttngs = $settings->getSettings();
+echo '<!-- ' . $sttngs . ' -->';
+if ($accCode) { ?>
+
+<script>
+(function (a, c, b, e) {
+a[b] = a[b] || {}; a[b].initial = { accountCode: "<?php echo $accCode; ?>", host: "<?php echo $accCode; ?>.pcapredict.com" };
+a[b].on = a[b].on || function () { (a[b].onq = a[b].onq || []).push(arguments) }; var d = c.createElement("script");
+d.async = !0; d.src = e; c = c.getElementsByTagName("script")[0]; c.parentNode.insertBefore(d, c)
+})(window, document, "pca", "//<?php echo $accCode; ?>.pcapredict.com/js/sensor.js");
+</script>
+
+<?php } ?>

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+	<system>
+		<tab id="pca_settings" translate="label" sortOrder="1000">
+			<label>PCA Predict</label>
+		</tab>
+		<section id="pca_settings_section" translate="label" sortOrder="1000" showInDefault="1" showInWebsite="1" showInStore="1">
+			<label>Settings</label>
+			<tab>pca_settings</tab>
+			<resource>PCAPredict_Tag::configuration</resource>
+			<group id="settings" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+				<label>PCA Predict Settings</label>
+                <comment><![CDATA[<div style="margin-bottom:10px;">To set up a PCA Predict account, please visit our <a href="http://www.pcapredict.co.uk/integrations/magento/get-started-capture-plus/" target="_blank" style="margin-left:0;">Getting Started</a> page</div>]]></comment>
+				<field id="account_code" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Account Code: </label>
+				</field>
+			</group>
+		</section>
+	</system>
+</config>
