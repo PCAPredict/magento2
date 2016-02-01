@@ -21,14 +21,6 @@ class SettingsData extends \Magento\Framework\App\Helper\AbstractHelper
 		parent::__construct($context);
 	}
     
-	public function getSettings() {
-		$config = [];
-		$config['account_code'] = $this->scopeConfig->getValue(
-                'pca_settings_section/settings/account_code',
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-            );
-		return json_encode($config);
-	}
     
     
     public function getAccountCode() {

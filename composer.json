@@ -1,9 +1,9 @@
 {
     "name": "pcapredict/tag",
-    "description": "PCA Predict is the market leader in UK &amp; international address verification for the Magento e-commerce platform.",
+    "description": "Integrates of PCA Predict Tag for Magento 2.",
     "require": {
-	 "php": "~5.5.0|~5.6.0",
-	 "magento/magento-composer-installer": "*"
+        "php": "~5.5.0|~5.6.0|~7.0.0",
+        "magento/magento-composer-installer": "*"
     },
     "type": "magento2-module",
     "version": "0.1.0",
