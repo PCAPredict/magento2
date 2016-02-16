@@ -23,10 +23,22 @@ class SettingsData extends \Magento\Framework\App\Helper\AbstractHelper
     
     
     
-    public function getAccountCode() {
+    public function getAccountCode() 
+    {
         return $this->_escaper->escapeHtml(
             $this->scopeConfig->getValue(
                 'pca_settings_section/settings/account_code',
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            )
+        );
+    }
+    
+    
+    public function getFieldMappings() 
+    {
+        return $this->_escaper->escapeHtml(
+            $this->scopeConfig->getValue(
+                'pca_settings_section/settings/field_mappings',
                 \Magento\Store\Model\ScopeInterface::SCOPE_STORE
             )
         );
