@@ -13,11 +13,11 @@
                 <comment><![CDATA[<div style="margin-bottom:10px;">To set up a PCA Predict account, please visit our <a href="http://www.pcapredict.co.uk/integrations/magento2/get-started/" target="_blank" style="margin-left:0;">Getting Started</a> page</div>]]></comment>
 				<field id="account_code" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
 					<label>Account Code: </label>
-                    <comment><![CDATA[]]></comment>
+                    <comment><![CDATA[This is your PCA Account code.]]></comment>
 				</field>
                 <field id="field_mappings" translate="label" type="textarea" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
 					<label>Field Mappings: </label>
-                    <comment><![CDATA[]]></comment>
+                    <comment><![CDATA[This is the field mappings configuration. You should only modify these if you know what you are doing, or directed to do so by support!]]></comment>
 				</field>
 			</group>
 		</section>

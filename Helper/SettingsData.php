@@ -36,11 +36,9 @@ class SettingsData extends \Magento\Framework\App\Helper\AbstractHelper
     
     public function getFieldMappings() 
     {
-        return $this->_escaper->escapeHtml(
-            $this->scopeConfig->getValue(
-                'pca_settings_section/settings/field_mappings',
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-            )
+        return $this->scopeConfig->getValue(
+            'pca_settings_section/settings/field_mappings',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }
 
