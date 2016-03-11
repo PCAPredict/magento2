@@ -1,26 +1,6 @@
 #PCA Predict Magento 2 Integration
 ##Quick instructions
 
-###Install via composer
-
-First add the repository:
-```
-composer config repositories.pcapredict git https://github.com/pcapredict/magento2.git
-```
-Then, request composer to fetch the module:
-```
-composer require pcapredict/module-tag
-```
-
-Then execute install script
-```
-php bin/magento setup:upgrade
-```
-- You may need to run the following command to flush the Magento cache:
-```
-php bin/magento cache:flush
-```
-
 ###Manual Install
 - Create folder structure /app/code/PCAPredict/Tag/
 ####From Git
@@ -45,9 +25,7 @@ Once you have entered your PCA account code, go to your PCA account section to s
 
  
 
-#### Main Options
-Account Code - Enter your PCA Predict Account Code here.
-Field Mappings - These are some custom field mappings that allow our services to work in Magento 2. Normally, you shouldn't need to change these, but can be if directed to do so by technical support.
-
-##End-user Instructions
+### Main Options
+- Account Code - Enter your PCA Predict Account Code here.
+- Field Mappings - These are some custom field mappings that allow our services to work in Magento 2. Normally, you shouldn't need to change these, but can be if directed to do so by technical support.
 

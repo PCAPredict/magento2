@@ -45,31 +45,28 @@ if ($pcaAccCode) { ?>
             
             switch (service) {
                 case 'capture+': 
-                    // var newCPMappings = [];
-                    // for (var i = 0; i < capturePlusMappings.length; i++) {
-                    //     var dynamicCPFields = document.getElementsByName(capturePlusMappings[i].element);
-                    //     if (dynamicCPFields && dynamicCPFields.length) {
-                    //         for (var cntr = 0; cntr < dynamicCPFields.length; cntr++) {
-                    //             if (dynamicCPFields[cntr].id) {
-                    //                 var newMapping = {};
-                    //                 newMapping.field = capturePlusMappings[i].field;
-                    //                 newMapping.mode = capturePlusMappings[i].mode;
-                    //                 newMapping.element = dynamicCPFields[cntr].id;
-                    //                 newCPMappings.push(newMapping);
-                    //             }
-                    //         }
-                    //     }
-                    //     else {
-                    //         newCPMappings.push(capturePlusMappings[i]);
-                    //     }
-                    // }
-                    fields.length = 0;
-                    // for (var i = 0; i < newCPMappings.length; i++) {
-                    //     fields.push(newCPMappings[i]);
-                    // } 
+                    var newCPMappings = [];
                     for (var i = 0; i < capturePlusMappings.length; i++) {
-                        fields.push(capturePlusMappings[i]);
+                        var dynamicCPFields = document.getElementsByName(capturePlusMappings[i].element);
+                        if (dynamicCPFields && dynamicCPFields.length) {
+                            for (var cntr = 0; cntr < dynamicCPFields.length; cntr++) {
+                                if (magento.isElementVisible(dynamicCPFields[cntr]) && dynamicCPFields[cntr].id) {
+                                    var newMapping = {};
+                                    newMapping.field = capturePlusMappings[i].field;
+                                    newMapping.mode = capturePlusMappings[i].mode;
+                                    newMapping.element = dynamicCPFields[cntr].id;
+                                    newCPMappings.push(newMapping);
+                                }
+                            }
+                        }
+                        else {
+                            newCPMappings.push(capturePlusMappings[i]);
+                        }
                     }
+                    fields.length = 0;
+                    for (var i = 0; i < newCPMappings.length; i++) {
+                        fields.push(newCPMappings[i]);
+                    } 
                     break;
                     
                 case 'mobilevalidation':
@@ -97,39 +94,7 @@ if ($pcaAccCode) { ?>
                     }                     
                     phoneFieldCall++;
                     break;
-                
-                /*
-                case 'emailvalidation': 
-                
-                    var emailFieldCount = fields.length;                
-                    var newEmailMappings = [];                    
-                    for (var i = 0; i < emailMappings.length; i++) {
-                        var dynamicEmailFields = document.getElementsByName(emailMappings[i].element);
-                        if (dynamicEmailFields && dynamicEmailFields.length) {
-                            if (dynamicEmailFields.length > emailFieldCall) {
-                                if (dynamicEmailFields[emailFieldCall].id) {
-                                    var newMapping = {};
-                                    newMapping.field = emailMappings[i].field;
-                                    newMapping.mode = emailMappings[i].mode;
-                                    newMapping.element = dynamicEmailFields[emailFieldCall].id;
-                                    newEmailMappings.push(newMapping);
-                                }
-                            }
-                        }
-                        else {
-                            newEmailMappings.push(emailMappings[i]);
-                        }
-                    }             
-                    if (newEmailMappings.length > 0) {
-                        fields.length = 0;
-                        for (var i = 0; i < newEmailMappings.length; i++) {
-                            fields.push(newEmailMappings[i]);
-                        }
-                    }                     
-                    emailFieldCall++;
-                    break;
-                   */
-                    
+
                 default: 
                     break;
             }
@@ -156,8 +121,8 @@ if ($pcaAccCode) { ?>
         }
         
         
-        magento.loadpca = function() {
-            phoneFieldCall = 0;
+        magento.loadpca = function() {     
+            phoneFieldCall = 0;       
             pca.load();
             
             // we need to reload when the billing address form is shown 
@@ -166,6 +131,7 @@ if ($pcaAccCode) { ?>
             if (el) {
                 el.onclick = function(){
                     if (this.checked === false) {
+                        phoneFieldCall = 0;
                         pca.load();
                     }
                 }
