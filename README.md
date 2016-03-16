@@ -3,8 +3,10 @@
 
 ###Manual Install
 - Create folder structure /app/code/PCAPredict/Tag/
+
 ####From Git
 - Clone the Git repository (https://github.com/pcapredict/magento2.git) to the folder you just created
+
 ####From a .ZIP file
 - Download the .ZIP file from the [PCA Predict website](http://go.postcodeanywhere.com/l/52622/2016-03-15/b2zm2r "PCA Predict")
 - Extract the contents of the .ZIP file to the folder you just created
