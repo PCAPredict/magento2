@@ -5,9 +5,9 @@
 - Create folder structure /app/code/PCAPredict/Tag/
 ####From Git
 - Clone the Git repository (https://github.com/pcapredict/magento2.git) to the folder you just created
-####From a zip file
-- Download the zip file from the PCA Predict website (INSERT URL HERE)
-- Extract the contents of the zip file to the folder you just created
+####From a .ZIP file
+- Download the .ZIP file from the [PCA Predict website](http://go.postcodeanywhere.com/l/52622/2016-03-15/b2zm2r "PCA Predict")
+- Extract the contents of the .ZIP file to the folder you just created
 
 - Run install commands:
 ```
@@ -19,13 +19,13 @@ php bin/magento cache:flush
 ```
 
 ##Configuration Instructions
-The configuration for the extension is located under Stores -> Configuration -> PCA Predict -> Settings.
+The configuration for the extension is located under Stores > Configuration > PCA Predict > Settings.
 
-Once you have entered your PCA account code, go to your PCA account section to setup new Capture+, and optionally Email Validation & Phone Validation services, following the setup instructions to configure each new service on your website.
+Once you have entered your PCA Predict Account Code, visit your PCA Predict Account Dashboard to set up Address Validation, and (optional) Email & Phone Validation services, following the setup instructions to configure each new service on your website.
 
  
 
 ### Main Options
 - Account Code - Enter your PCA Predict Account Code here.
-- Field Mappings - These are some custom field mappings that allow our services to work in Magento 2. Normally, you shouldn't need to change these, but can be if directed to do so by technical support.
+- Field Mappings - These are some custom field mappings that allow our services to work in Magento 2. Normally, you shouldn't need to change these, but can do so if instructed by the PCA Predict Support team or your developer
 
