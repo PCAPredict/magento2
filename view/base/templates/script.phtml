@@ -154,6 +154,10 @@ if ($pcaAccCode) { ?>
                     }
                 }
             }
+            
+            if (typeof pca.platform !== 'undefined' && typeof pca.platform.setup !== 'undefined') {
+                pca.platform.setup.start();
+            }
         }
 
         //load address forms

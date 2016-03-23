@@ -1,4 +1,4 @@
 <?xml version="1.0"?>
 <config>
-   <module name="PCAPredict_Tag" setup_version="0.1.0"></module>
+   <module name="PCAPredict_Tag" setup_version="1.0.0"></module>
 </config>
