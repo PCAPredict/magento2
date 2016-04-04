@@ -7,22 +7,14 @@
     },
     "autoload": {
         "psr-4": {
-            "PCApredict\\Tag\\": "app/code/PCAPredict/Tag"
+            "PCApredict\\Tag\\": ""
         },        
         "files": [
-            "app/code/PCAPredict/Tag/registration.php"
+            "registration.php"
         ]
     },
     "type": "magento2-module",
     "version": "1.0.0",
-    "extra": {
-        "map": [
-            [
-                "*",
-                "PCAPredict/Tag"
-            ]
-        ]
-    },
     "authors": [
         {
             "name": "PCA Predict",
