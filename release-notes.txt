@@ -1,2 +1,5 @@
+=== v1.0.1 ===
+Fix issue where address fields are not detecting changes when populating from search results
+
 === v1.0.0 ===
 Initial release
