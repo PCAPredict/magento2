@@ -155,12 +155,20 @@ if ($pcaAccCode) { ?>
             
             var buttons = document.getElementsByTagName('button');
             for (var b = 0; b < buttons.length; b++) {
-                if (buttons[b].className.indexOf('scalable') > -1 && buttons[b].className.indexOf('add') > -1) {
+                if ((buttons[b].className.indexOf('scalable') > -1 && buttons[b].className.indexOf('add') > -1) || buttons[b].className.indexOf('action-show-popup') > -1) {
                     buttons[b].onclick = function() { 
                         magento.load();
                     }
                 }
             }
+            
+            var billingSelect = document.getElementsByName('billing_address_id');
+            for (var s = 0; s < billingSelect.length; s++) {
+                billingSelect[s].onchange = function() {
+                    magento.load();
+                }
+            }
+
             
             var addressListItems = document.getElementsByTagName('li');
             for (var i = 0; i < addressListItems.length; i++) {
@@ -174,6 +182,8 @@ if ($pcaAccCode) { ?>
             if (typeof pca.platform !== 'undefined' && typeof pca.platform.setup !== 'undefined') {
                 pca.platform.setup.start();
             }
+            
+            pca.sourceString = 'Magento2Extension-v1.0.2';
         }
 
         //load address forms
@@ -185,7 +195,8 @@ if ($pcaAccCode) { ?>
         
         magento.canLoad = function() {
             // check to see if we have the form fields                    
-            if (pca 
+            if (pca
+                && pca.platform
                 && typeof pca.platform.elementExists === 'function' 
                 && (pca.platform.elementExists("address[1][street][0]") 
                     || pca.platform.elementExists("street0")
