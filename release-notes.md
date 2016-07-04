@@ -1,5 +1,9 @@
 # Release notes
 
+## v1.0.4
+
+- Fix issue where services not loaded on certain address forms
+
 ## v1.0.3
 
 - Fix mismatching versions (`composer.json` declares v1.0.1 in tagged 1.0.2)

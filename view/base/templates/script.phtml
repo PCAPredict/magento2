@@ -143,14 +143,16 @@ if ($pcaAccCode) { ?>
             
             // we need to reload when the billing address form is shown 
             // so that we properly setup the phone validation. 
-            var el = document.getElementById('billing-address-same-as-shipping-checkmo');
-            if (el) {
-                el.onclick = function(){
-                    if (this.checked === false) {
-                        phoneFieldCall = 0;
-                        pca.load();
+            var els = document.getElementsByName('billing-address-same-as-shipping');
+            if (els && els.length) {
+                for (var i=0; i<els.length; i++) {
+                    els[i].onclick = function(){
+                        if (this.checked === false) {
+                            phoneFieldCall = 0;
+                            pca.load();
+                        }
                     }
-                }
+                }                    
             }
             
             var buttons = document.getElementsByTagName('button');
@@ -183,7 +185,7 @@ if ($pcaAccCode) { ?>
                 pca.platform.setup.start();
             }
             
-            pca.sourceString = 'Magento2Extension-v1.0.2';
+            pca.sourceString = 'Magento2Extension-v1.0.4';
         }
 
         //load address forms
