@@ -65,7 +65,7 @@ if ($pcaAccCode) { ?>
                         var dynamicCPFields = document.getElementsByName(capturePlusMappings[i].element);
                         if (dynamicCPFields && dynamicCPFields.length) {
                             for (var cntr = 0; cntr < dynamicCPFields.length; cntr++) {
-                                if (magento.isElementVisible(dynamicCPFields[cntr]) && dynamicCPFields[cntr].id) {
+                                if (dynamicCPFields[cntr].id) {
                                     var newMapping = {};
                                     newMapping.field = capturePlusMappings[i].field;
                                     newMapping.mode = capturePlusMappings[i].mode;
@@ -81,7 +81,15 @@ if ($pcaAccCode) { ?>
                     fields.length = 0;
                     for (var i = 0; i < newCPMappings.length; i++) {
                         fields.push(newCPMappings[i]);
-                        capturePlusFields.push(newCPMappings[i]);
+                        var fieldAlreadyFound = false;
+                        for (var ii = 0; ii < capturePlusFields.length; ii++) {
+                            if (capturePlusFields[ii].element === newCPMappings[i].element) {
+                                fieldAlreadyFound = true;
+                                break;
+                            }
+                        }
+                        if (fieldAlreadyFound != true) 
+                            capturePlusFields.push(newCPMappings[i]);
                     } 
                     break;
                     
@@ -185,7 +193,7 @@ if ($pcaAccCode) { ?>
                 pca.platform.setup.start();
             }
             
-            pca.sourceString = 'Magento2Extension-v1.0.4';
+            pca.sourceString = 'Magento2Extension-v1.0.5';
         }
 
         //load address forms

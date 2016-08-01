@@ -11,7 +11,7 @@
 - Download the .ZIP file from the [PCA Predict website](http://go.postcodeanywhere.com/l/52622/2016-03-15/b2zm2r "PCA Predict")
 - Extract the contents of the .ZIP file to the folder you just created
 
-- Run install commands:
+#### Run install commands:
 ```
 php bin/magento setup:upgrade
 ```
