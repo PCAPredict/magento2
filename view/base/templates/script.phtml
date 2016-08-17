@@ -20,12 +20,7 @@ if ($pcaAccCode) { ?>
         magento.currentUrl = window.location.href;
         var capturePlusFields = [];
         
-        pca.on('data', function(source, key, address, variations) {
-            console.log(source);
-            console.log(key);
-            console.log(address);
-            console.log(variations);
-            
+        pca.on('data', function(source, key, address, variations) {           
             for (var i = 0; i < capturePlusFields.length; i++) {
                 var el = document.getElementById(capturePlusFields[i].element);
                 if (el) {
@@ -35,7 +30,7 @@ if ($pcaAccCode) { ?>
         })
         
         pca.on('options', function(options) {
-            console.log(options);
+            //
         });
         
         pca.on('restrictions', function (service, key, restrictions) {
@@ -193,7 +188,7 @@ if ($pcaAccCode) { ?>
                 pca.platform.setup.start();
             }
             
-            pca.sourceString = 'Magento2Extension-v1.0.5';
+            pca.sourceString = 'Magento2Extension-v1.0.6';
         }
 
         //load address forms

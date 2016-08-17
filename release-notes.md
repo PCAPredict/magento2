@@ -1,5 +1,9 @@
 # Release notes
 
+## v1.0.6
+
+- Remove some console.log calls
+
 ## v1.0.5
 
 - Fix issue where State/Province field not populating correctly
