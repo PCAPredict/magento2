@@ -42,4 +42,13 @@ class SettingsData extends \Magento\Framework\App\Helper\AbstractHelper
         );
     }
 
+
+    public function getCustomJavaScript()
+    {
+        return $this->scopeConfig->getValue(
+            'pca_settings_section/settings/custom_javascript',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+    }
+
 }

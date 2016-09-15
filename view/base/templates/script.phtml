@@ -2,6 +2,7 @@
 $pcaSettings = $this->helper('PCAPredict\Tag\Helper\SettingsData');
 $pcaAccCode = $pcaSettings->getAccountCode();
 $pcaMappings = $pcaSettings->getFieldMappings();
+$pcaCustomJS = $pcaSettings->getCustomJavaScript();
 if ($pcaAccCode) { ?>
 
 <script>
@@ -20,12 +21,26 @@ if ($pcaAccCode) { ?>
         magento.currentUrl = window.location.href;
         var capturePlusFields = [];
         
-        pca.on('data', function(source, key, address, variations) {           
-            for (var i = 0; i < capturePlusFields.length; i++) {
+        pca.on('data', function(source, key, address, variations) {
+            var provNameElId = "";
+            for (var i = 0; i < capturePlusFields.length; i++) {                
                 var el = document.getElementById(capturePlusFields[i].element);
                 if (el) {
+                    if (capturePlusFields[i].field === "{ProvinceName}") {
+                        provNameElId = el.id;
+                    }
                     pca.fire(el, 'change');
                 }
+            }
+            var el = document.getElementById(provNameElId);
+            if (el) {
+                for (var j = 0; j < el.options.length; j++) {
+                    if (el.options[j].text === address.ProvinceName) {
+                        el.selectedIndex = j;
+                        break;
+                    }
+                }
+                pca.fire(el, 'change');
             }
         })
         
@@ -121,7 +136,6 @@ if ($pcaAccCode) { ?>
         });
         
         
-       
         
         magento.isElementVisible = function( elem ) {
             return !!( elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length );
@@ -188,7 +202,7 @@ if ($pcaAccCode) { ?>
                 pca.platform.setup.start();
             }
             
-            pca.sourceString = 'Magento2Extension-v1.0.6';
+            pca.sourceString = 'Magento2Extension-v1.0.7';
         }
 
         //load address forms
@@ -238,6 +252,8 @@ if ($pcaAccCode) { ?>
         magento.onload(function() {
             window.setTimeout(magento.canLoad, 500);
         });
+
+        <?php if ($pcaCustomJS) echo $pcaCustomJS; ?>   
         
     })();
   

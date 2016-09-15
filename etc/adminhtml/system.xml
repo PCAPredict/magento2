@@ -19,6 +19,10 @@
 					<label>Field Mappings: </label>
                     <comment><![CDATA[Do not make changes to the Field Mappings configuration unless advised by PCA Predict or your developer]]></comment>
 				</field>
+				<field id="custom_javascript" translate="label" type="textarea" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Custom JavaScript: </label>
+					<comment><![CDATA[Use this section for custom JavaScript as provided, or advised, by PCA Predict]]></comment>
+				</field>
 			</group>
 		</section>
 	</system>

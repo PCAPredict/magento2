@@ -1,5 +1,11 @@
 # Release notes
 
+## v1.0.7
+
+- Add ability for customers to add custom JavaScript code
+- Fix issue where US states dropdown isn't being updated when an address is selected
+- Update default mappings to help with the above issue 
+
 ## v1.0.6
 
 - Remove some console.log calls
