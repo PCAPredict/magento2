@@ -1,5 +1,9 @@
 # Release notes
 
+## v1.0.8
+
+- load js with requirejs 
+
 ## v1.0.7
 
 - Add ability for customers to add custom JavaScript code
