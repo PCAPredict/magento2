@@ -54,8 +54,18 @@ if ($pcaAccCode) { ?>
                     case 'capture+': 
                     case 'mobilevalidation':
                     case 'emailvalidation': 
+
+                        var newRestrictions = [];
+
+                        for (var i = 0; i < restrictions.length; i++) {
+                            if (!restrictions[i].Key.startsWith('fieldPresent')) {
+                                newRestrictions.push(restrictions[i]);
+                            }
+                        }
                         restrictions.length = 0;
+                        restrictions = newRestrictions;
                         break;
+                        
                     default: 
                         break;
                 }
@@ -203,7 +213,7 @@ if ($pcaAccCode) { ?>
                     pca.platform.setup.start();
                 }
                 
-                pca.sourceString = 'Magento2Extension-v1.0.8';
+                pca.sourceString = 'Magento2Extension-v1.0.9';
             }
 
             //load address forms

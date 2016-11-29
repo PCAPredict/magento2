@@ -15,7 +15,7 @@
 - Add the repository to your list of respositories:<br />
 <pre>composer config repositories.pca-predict vcs https://github.com/PCAPredict/magento2.git</pre>
 - Pull in the latest version:<br />
-<pre>composer require pcapredict/tag:^1.0.8</pre>
+<pre>composer require pcapredict/tag:^1.0.9</pre>
 
 #### Run install commands:
 ```
