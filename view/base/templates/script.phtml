@@ -1,0 +1,273 @@
+<?php
+$pcaSettings = $this->helper('PCAPredict\Tag\Helper\SettingsData');
+$pcaAccCode = $pcaSettings->getAccountCode();
+$pcaMappings = $pcaSettings->getFieldMappings();
+$pcaCustomJS = $pcaSettings->getCustomJavaScript();
+if ($pcaAccCode) { ?>
+
+<script type="text/javascript">
+    
+    (function (a, c, b, e) {
+    a[b] = a[b] || {}; a[b].initial = { accountCode: "<?php echo $pcaAccCode; ?>", host: "<?php echo $pcaAccCode; ?>.pcapredict.com" };
+    a[b].on = a[b].on || function () { (a[b].onq = a[b].onq || []).push(arguments) }; var d = c.createElement("script");
+    d.async = !0; d.src = e; c = c.getElementsByTagName("script")[0]; c.parentNode.insertBefore(d, c)
+    })(window, document, "pca", "//<?php echo $pcaAccCode; ?>.pcapredict.com/js/sensor.js");
+    
+    requirejs(['jquery'], function(jQuery){
+        (function() {
+            
+            var magento = pca.magento = pca.magento || {};
+
+            magento.controls = magento.controls || [];
+            magento.currentUrl = window.location.href;
+            var capturePlusFields = [];
+            
+            pca.on('data', function(source, key, address, variations) {
+                var provNameElId = "";
+                for (var i = 0; i < capturePlusFields.length; i++) {                
+                    var el = document.getElementById(capturePlusFields[i].element);
+                    if (el) {
+                        if (capturePlusFields[i].field === "{ProvinceName}") {
+                            provNameElId = el.id;
+                        }
+                        pca.fire(el, 'change');
+                    }
+                }
+                var el = document.getElementById(provNameElId);
+                if (el) {
+                    for (var j = 0; j < el.options.length; j++) {
+                        if (el.options[j].text === address.ProvinceName) {
+                            el.selectedIndex = j;
+                            break;
+                        }
+                    }
+                    pca.fire(el, 'change');
+                }
+            });
+            
+            pca.on('options', function(options) {
+                //
+            });
+            
+            pca.on('restrictions', function (service, key, restrictions) {
+                switch (service) {
+                    case 'capture+': 
+                    case 'mobilevalidation':
+                    case 'emailvalidation': 
+                    
+                        var newRestrictions = [];
+
+                        for (var i = 0; i < restrictions.length; i++) {
+                            if (!restrictions[i].Key.startsWith('fieldPresent')) {
+                                newRestrictions.push(restrictions[i]);
+                            }
+                        }
+                        restrictions.length = 0;
+                        restrictions = newRestrictions;
+
+                        break;
+                    default: 
+                        break;
+                }
+                
+            });
+
+            var phoneFieldCall = 0; 
+            var emailFieldCall = 0;     
+
+            pca.on("fields", function(service, id, fields){
+                var capturePlusMappings = [];
+                var phoneMappings = [];
+                var emailMappings = [];
+
+                <?php if ($pcaMappings) echo $pcaMappings; ?>        
+                
+                switch (service) {
+
+                    case 'capture+': 
+                        var newCPMappings = [];
+                        for (var i = 0; i < capturePlusMappings.length; i++) {
+                            var dynamicCPFields = document.getElementsByName(capturePlusMappings[i].element);
+                            if (dynamicCPFields && dynamicCPFields.length) {
+                                for (var cntr = 0; cntr < dynamicCPFields.length; cntr++) {
+                                    if (dynamicCPFields[cntr].id) {
+                                        var newMapping = {};
+                                        newMapping.field = capturePlusMappings[i].field;
+                                        newMapping.mode = capturePlusMappings[i].mode;
+                                        newMapping.element = dynamicCPFields[cntr].id;
+                                        newCPMappings.push(newMapping);
+                                    }
+                                }
+                            }
+                            else {
+                                newCPMappings.push(capturePlusMappings[i]);
+                            }
+                        }
+                        fields.length = 0;
+                        for (var i = 0; i < newCPMappings.length; i++) {
+                            fields.push(newCPMappings[i]);
+                            var fieldAlreadyFound = false;
+                            for (var ii = 0; ii < capturePlusFields.length; ii++) {
+                                if (capturePlusFields[ii].element === newCPMappings[i].element) {
+                                    fieldAlreadyFound = true;
+                                    break;
+                                }
+                            }
+                            if (fieldAlreadyFound != true) 
+                                capturePlusFields.push(newCPMappings[i]);
+                        } 
+                        break;
+                        
+                    case 'mobilevalidation':
+                        var phoneFieldCount = fields.length;                
+                        var newMobileMappings = [];                    
+                        for (var i = 0; i < phoneMappings.length; i++) {
+                            var dynamicMobFields = document.getElementsByName(phoneMappings[i].element);
+                            if (dynamicMobFields && dynamicMobFields.length) {
+                                if (dynamicMobFields.length > phoneFieldCall) {
+                                    if (magento.isElementVisible(dynamicMobFields[phoneFieldCall]) && dynamicMobFields[phoneFieldCall].id) {
+                                        var newMapping = {};
+                                        newMapping.field = phoneMappings[i].field;
+                                        newMapping.mode = phoneMappings[i].mode;
+                                        newMapping.element = dynamicMobFields[phoneFieldCall].id;
+                                        newMobileMappings.push(newMapping);
+                                    }
+                                }
+                            }
+                        }             
+                        if (newMobileMappings.length > 0) {
+                            fields.length = 0;
+                            for (var i = 0; i < newMobileMappings.length; i++) {
+                                fields.push(newMobileMappings[i]);
+                            }
+                        }                     
+                        phoneFieldCall++;
+                        break;
+
+                    default: 
+                        break;
+                }
+                                        
+            });
+            
+            magento.isElementVisible = function( elem ) {
+                return !!( elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length );
+            };
+            
+            magento.checkUrlChange = function() {
+                if (window.location.href != magento.currentUrl) {
+                    magento.currentUrl = window.location.href;
+                    window.setTimeout(magento.loadpca, 1000); 
+                    window.setTimeout(magento.checkUrlChange, 1000); 
+                }
+                else {
+                    window.setTimeout(magento.checkUrlChange, 1000); 
+                }
+            }
+            
+            magento.loadpca = function() {     
+                phoneFieldCall = 0;       
+                pca.load();
+                
+                // we need to reload when the billing address form is shown 
+                // so that we properly setup the phone validation. 
+                var els = document.getElementsByName('billing-address-same-as-shipping');
+                if (els && els.length) {
+                    for (var i=0; i<els.length; i++) {
+                        els[i].onclick = function(){
+                            if (this.checked === false) {
+                                phoneFieldCall = 0;
+                                pca.load();
+                            }
+                        }
+                    }                    
+                }
+                
+                var buttons = document.getElementsByTagName('button');
+                for (var b = 0; b < buttons.length; b++) {
+                    if ((buttons[b].className.indexOf('scalable') > -1 && buttons[b].className.indexOf('add') > -1) || buttons[b].className.indexOf('action-show-popup') > -1) {
+                        buttons[b].onclick = function() { 
+                            magento.load();
+                        }
+                    }
+                }
+                
+                var billingSelect = document.getElementsByName('billing_address_id');
+                for (var s = 0; s < billingSelect.length; s++) {
+                    billingSelect[s].onchange = function() {
+                        magento.load();
+                    }
+                }
+
+                
+                var addressListItems = document.getElementsByTagName('li');
+                for (var i = 0; i < addressListItems.length; i++) {
+                    if (addressListItems[i].className.indexOf('address-list-item') > -1) {
+                        addressListItems[i].onclick = function() { 
+                            magento.load();
+                        }
+                    }
+                }
+                
+                if (typeof pca.platform !== 'undefined' && typeof pca.platform.setup !== 'undefined') {
+                    pca.platform.setup.start();
+                }
+                
+                pca.sourceString = 'Magento2Extension-Tag-v1.0.0';
+            }
+
+            //load address forms
+            magento.load = function() { 
+                window.setTimeout(magento.loadpca, 1000); 
+                window.setTimeout(magento.checkUrlChange, 1000);           
+            }
+            
+            magento.canLoad = function() {
+                // check to see if we have the form fields                    
+                if (pca
+                    && pca.platform
+                    && typeof pca.platform.elementExists === 'function' 
+                    && (pca.platform.elementExists("address[1][street][0]") 
+                        || pca.platform.elementExists("street0")
+                        || pca.platform.elementExists("street[0]")
+                        || pca.platform.elementExists("address[new_0][street][0]"))) {
+                        
+                    //load controls for address forms
+                    magento.load();
+                }
+                else {
+                    // re-set the timout
+                    window.setTimeout(magento.canLoad, 500);
+                }
+            }
+            
+            magento.onload = function(func) {
+                // assign any pre-defined functions on 'window.onload' to a variable
+                var oldOnLoad = window.onload;
+                // if there is not any function hooked to it
+                if (typeof window.onload !== 'function') {
+                    // you can hook your function with it
+                    window.onload = func
+                } else { // someone already hooked a function
+                    window.onload = function () {
+                        // call the function hooked already
+                        oldOnLoad();
+                        // call your awesome function
+                        func();
+                    }
+                }
+            }
+
+            //wait for the page to be ready
+            magento.onload(function() {
+                window.setTimeout(magento.canLoad, 500);
+            });
+
+            <?php if ($pcaCustomJS) echo $pcaCustomJS; ?>   
+            
+        })();
+    });
+  
+</script>
+
+<?php }

@@ -1,0 +1,384 @@
+<?php
+
+$pcaSettings = $this->helper('PCAPredict\Tag\Helper\SettingsData');
+
+$pcaAccCode = $pcaSettings->getAccountCode();
+$pcaToken = $pcaSettings->getAccountToken();
+$pcaLicenseKey = $pcaSettings->getLicenseKey();
+
+$pcaMappings = $pcaSettings->getFieldMappings();
+$pcaCustomJS = $pcaSettings->getCustomJavaScript();
+
+?>
+
+
+<div class="pcapredict-container">
+
+    <div class="pcapredict-message-container">
+        <div class="pcapredict-message pcapredict-message-error">
+            
+        </div>
+    </div>
+
+    <?php
+    if ($pcaAccCode) : ?>
+        
+        <script>    
+            (function (a, c, b, e) {
+            a[b] = a[b] || {}; a[b].initial = { accountCode: "<?php echo $pcaAccCode; ?>", host: "<?php echo $pcaAccCode; ?>.pcapredict.com" };
+            a[b].on = a[b].on || function () { (a[b].onq = a[b].onq || []).push(arguments) }; var d = c.createElement("script");
+            d.async = !0; d.src = e; c = c.getElementsByTagName("script")[0]; c.parentNode.insertBefore(d, c)
+            })(window, document, "pca", "//<?php echo $pcaAccCode; ?>.pcapredict.com/js/sensor.js");
+        </script>
+
+        <div class="secure-container info-container" style="display: block;">        
+
+            <form id="formLogOut" onsubmit="return false;">
+
+                <fieldset>
+                    <h3>Account Information</h3>
+
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <label>Account Code</label>
+                        </div>
+                        <div class="col-xs-5">
+                            <label><?php echo strtoupper($pcaAccCode); ?></label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <label>Licence Key</label>
+                        </div>
+                        <div class="col-xs-5">
+                            <label><?php echo $pcaLicenseKey; ?></label>
+                        </div>
+                    </div>
+
+                    <button style="margin-top: 25px;" id="btnLogOut" type="submit" form="formLogOut" value="Log Out">Log out</button>
+                </fieldset>
+            </form>
+        </div>
+
+        <div class="secure-container settings-container" style="display: block;">        
+            <form id="formSettings" onsubmit="return false;">
+                <fieldset>
+                    <h3>Service Settings</h3>
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <label>Field Mappings</label>
+                        </div>
+                        <div class="col-xs-5">
+                            <textarea name="fieldmappings" id="fieldmappings"><?php echo $pcaMappings; ?></textarea>
+                        </div>
+                        <div class="col-xs-4">             
+                            <comment>Do not make changes to the Field Mappings configuration unless advised by PCA Predict Support team or your developer.</comment>
+                            <comment>Click <a id="resetMappings" name="resetMappings">here</a> to reset to the default field mappings</comment>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <label>Custom JavaScript</label>
+                        </div>
+                        <div class="col-xs-5">
+                            <textarea name="customjavascript" id="customjavascript"><?php echo $pcaCustomJS; ?></textarea>
+                        </div>
+                        <div class="col-xs-4">             
+                            <comment>Paste any custom JavaScript code that you have in here.</comment>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <label></label>
+                        </div>
+                        <div class="col-xs-5">
+                            <button id="btnSave" type="submit" form="formSettings" value="Save">Save</button>
+                        </div>
+                    </div>
+                    
+                </fieldset>
+            </form>
+        </div>
+
+    <?php else : ?>
+
+
+        <div class="secure-container login-container" style="display: block;">
+            
+            <form id="formLogIn" onsubmit="return false;">
+                <fieldset>
+                    <h3>Log in to PCA Predict</h3>
+                    <p>You need a PCA Predict account in order to use this extension.</p>
+                    <p>If you don't have a PCA Predict account, you can <a href="https://www.pcapredict.com/Register/" target="_blank">register for free</a> at our website.</p>
+                    <p>&nbsp;</p>
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <label>Account Code</label>
+                        </div>
+                        <div class="col-xs-5">
+                            <input type="text" name="accountCode" id="accountCode" placeholder="Account Code" data-cip-id="accountCode">
+                        </div>
+                        <div class="col-xs-4">             
+                            <comment></comment>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <label>Password</label>
+                        </div>
+                        <div class="col-xs-5">
+                            <input type="password" name="password" id="password" placeholder="Password" data-cip-id="password">
+                        </div>
+                        <div class="col-xs-4">             
+                            <comment></comment>
+                        </div>                    
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <label></label>
+                        </div>
+                        <div class="col-xs-5">
+                            <button id="btnLogIn" type="submit" form="formLogIn" value="Log in">Log in</button>
+                        </div>                    
+                    </div> 
+                    <!-- <p>If you need any help getting started with our Magento 2 extension, take a look at our <a href="" target="_blank">handy setup guide</a>.</p> -->    
+
+                    <div style="margin-top: 25px;" class="secure-container-footer">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <a href="https://account.pcapredict.com/security/forgot/" class="tag-lnk-show-forgotten" target="_blank">Forgotten your password?</a>
+                            </div>
+                        </div>
+                    </div>           
+                </fieldset>
+            </form>   
+        </div>
+
+    <?php endif; ?>
+
+    <script type="text/javascript">
+
+        requirejs(['jquery'], function(jQuery){
+
+            (function($){
+
+                $('#resetMappings').on('click', function(){
+                    $('#fieldmappings').val(<?php echo $pcaSettings->getDefaultMappings(); ?>);
+                });
+                
+                $('#formSettings').on('submit', function(){
+                    $('#btnSave').addClass('working');  
+                    $.ajax({
+                        type: 'POST',
+                        url: 'tag/settings', 
+                        showLoader: true,                  
+                        data: { 
+                            "form_key": window.FORM_KEY,
+                            "action": 'save',
+                            "account_code": "<?php echo $pcaAccCode; ?>",
+                            "account_token": "<?php echo $pcaToken; ?>",
+                            "license_key": "<?php echo $pcaLicenseKey; ?>",
+                            "custom_javascript": $('#customjavascript').val(),
+                            "field_mappings": $('#fieldmappings').val()
+                        }
+                    })
+                    .done(function(result){
+                        $('.pcapredict-message')
+                            .text('Your settings were saved.')
+                            .addClass('pcapredict-message-success')
+                            .slideDown(500, function(){
+                                hidePCAMessage(5000, 500);
+                            });                      
+                    })
+                    .fail(function(result){
+                        $('.pcapredict-message')
+                            .text('Sorry, there was a problem saving the settings.')
+                            .addClass('pcapredict-message-error')
+                            .slideDown(500, function(){
+                                hidePCAMessage(5000, 500);
+                            });
+                    })
+                    .always(function(){
+                        $('#btnSave').removeClass('working'); 
+                    });
+                });
+
+                $('#formLogIn').on('submit', function(){ 
+                    $('#btnLogIn').addClass('working');           
+                    $.ajax({
+                        showLoader: true,
+                        type: 'POST',
+                        url: 'https://app_api.pcapredict.com/api/primaryaccountauthorisation',
+                        processData: false,
+                        contentType: 'application/json',
+                        data: JSON.stringify({ 
+                            "accountcode": $('#accountCode').val(), 
+                            "password": $('#password').val(), 
+                            "deviceDescription": 'Magento 2 | ' + window.location.hostname,
+                            "deviceType": 1
+                        })
+                    })
+                    .done(function(result){
+
+                        if(console && console.log) console.log(result);
+                    
+                        if(result.accounts && Object.keys(result.accounts).length > 0) {
+
+                            var token = result.token.token;
+
+                            var accountCode = $('#accountCode').val();
+
+                            var auth = btoa(accountCode + ':' + token);
+
+                            var deviceDesc = window.location.hostname;
+
+                            var body = {
+                                "KeyName": deviceDesc,
+                                "BlockCreate": true,
+                                "IntegrationType": "Magento2"
+                            };
+
+                            $.ajax({
+                                showLoader: true,
+                                type: 'POST',
+                                url: 'https://app_api.pcapredict.com/api/license',
+                                processData: false,
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': 'Basic ' + auth
+                                },
+                                data: JSON.stringify(body)
+                            })
+                            .done(function(result){
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '<?php echo $block->getUrl('tag/login'); ?>',
+                                    showLoader: true,                  
+                                    data: { 
+                                        "form_key": window.FORM_KEY,
+                                        "account_code": accountCode,
+                                        "account_token": token,
+                                        "license_key": result.licenceKey
+                                    }
+                                })
+                                .done(function(result){
+                                    if(result.success) {
+
+                                    }
+                                    else {
+                                        $('.pcapredict-message')
+                                            .text('Sorry, there was a problem saving your login data')
+                                            .addClass('pcapredict-message-error')
+                                            .slideDown(500, function(){
+                                                hidePCAMessage(5000, 500);
+                                            });
+                                    }                                                                
+                                })
+                                .fail(function(result){
+                                    $('.pcapredict-message')
+                                        .text('Sorry, there was a problem saving your login data')
+                                        .addClass('pcapredict-message-error')
+                                        .slideDown(500, function(){
+                                            hidePCAMessage(5000, 500);
+                                        });
+                                })
+                                .always(function(){
+                                    window.location.reload(true);
+                                });
+                            })
+                            .fail(function(result){
+                                $('.pcapredict-message')
+                                    .text('Sorry, there was a problem creating your licence. Please email support@pcapredict.com')
+                                    .addClass('pcapredict-message-error')
+                                    .slideDown(500, function(){
+                                        hidePCAMessage(5000, 500);
+                                    });
+                            });
+                        } else {
+                            $('.pcapredict-message')
+                                    .text('Sorry, there was an error with the account setup to create your key. Please email support@pcapredict.com')
+                                    .addClass('pcapredict-message-error')
+                                    .slideDown(500, function(){
+                                        hidePCAMessage(5000, 500);
+                                    });
+                        }
+                    })
+                    .fail(function(result){
+                        $('#btnLogIn').removeClass('working'); 
+                        $('#accountCode').val("");
+                        $('#password').val("");
+                        $('.pcapredict-message')
+                            .text('Sorry, your account code or password was not recognized. Please try again.')
+                            .addClass('pcapredict-message-error')
+                            .slideDown(500, function(){
+                                hidePCAMessage(10000, 1000);
+                            });
+
+                    })
+                    .always(function(){
+                        $('#btnLogIn').removeClass('working'); 
+                    });
+                });
+
+
+                $('#formLogOut').on('submit', function(){
+                    $('#btnLogOut').addClass('working');  
+                    $.ajax({
+                        type: 'POST',
+                        url: 'tag/settings',
+                        showLoader: true,                    
+                        data: { 
+                            "form_key": window.FORM_KEY,
+                            "action": 'logout'
+                        }
+                    })
+                    .done(function(result){
+                        if(console && console.log) console.log(result);
+                        window.location.reload(true);
+                    })
+                    .fail(function(result){
+                        $('.pcapredict-message')
+                            .text('Sorry, there was a problem logging out from your PCA Predict account.')
+                            .addClass('pcapredict-message-error')
+                            .slideDown(500, function(){
+                                hidePCAMessage(5000, 500);
+                            });
+                    })
+                    .always(function(){
+                        hidePCAMessage(5000, 1000);
+                    });
+                });
+
+                $('#formRegister').on('click', function(){
+                    console.log('register!');
+                });
+
+
+                $('.adrsy-lnk-show-login').on('click', function(){
+                    showLogin();
+                });
+
+                var hidePCAMessage = function(delayMs, animateTime) {
+                    delayMs = delayMs || 0;
+                    animateTime = animateTime || 0;
+                    setTimeout(function(){
+                        $('.pcapredict-message').slideUp(animateTime);
+                    }, delayMs);
+                }
+
+                var showLogin = function(){
+                    $('.secure-container').css('display', 'none');
+                    $('.login-container').css('display', 'block');
+                }
+
+            })(jQuery);
+
+        });
+            
+            
+    </script>
+</div>
+
