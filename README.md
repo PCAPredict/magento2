@@ -2,7 +2,7 @@
 ##Quick instructions
 
 ###Manual Install
-- Create folder structure /app/code/PCAPredict/PCAPredict/
+- Create folder structure /app/code/PCAPredict/Tag/
 
 ####From a .ZIP file
 - Download the .ZIP file from the [PCAPredict website](TODO URL HERE "PCAPredict")
@@ -22,7 +22,6 @@ The configuration for the extension is located under Stores > Configuration > PC
 
 Once you have entered your PCAPredict Account Code, visit your PCAPredict Account Dashboard to set up Address Validation, following the setup instructions to configure the new service on your website.
 
- 
 
 ### Main Options
 - Account Code - Enter your PCAPredict Account Code here.
