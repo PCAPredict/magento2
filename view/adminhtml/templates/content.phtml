@@ -166,7 +166,7 @@ $pcaCustomJS = $pcaSettings->getCustomJavaScript();
             (function($){
 
                 $('#resetMappings').on('click', function(){
-                    $('#fieldmappings').val(<?php echo $pcaSettings->getDefaultMappings(); ?>);
+                    $('#fieldmappings').val('<?php echo $pcaSettings->getDefaultMappings(); ?>');
                 });
                 
                 $('#formSettings').on('submit', function(){

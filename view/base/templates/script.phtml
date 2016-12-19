@@ -1,5 +1,6 @@
 <?php
 $pcaSettings = $this->helper('PCAPredict\Tag\Helper\SettingsData');
+$allowedCountries = $this->helper('PCAPredict\Tag\Helper\SelectedCountries');
 $pcaAccCode = $pcaSettings->getAccountCode();
 $pcaMappings = $pcaSettings->getFieldMappings();
 $pcaCustomJS = $pcaSettings->getCustomJavaScript();
@@ -12,6 +13,8 @@ if ($pcaAccCode) { ?>
     a[b].on = a[b].on || function () { (a[b].onq = a[b].onq || []).push(arguments) }; var d = c.createElement("script");
     d.async = !0; d.src = e; c = c.getElementsByTagName("script")[0]; c.parentNode.insertBefore(d, c)
     })(window, document, "pca", "//<?php echo $pcaAccCode; ?>.pcapredict.com/js/sensor.js");
+
+    var countryBlockLookup = false;
     
     requirejs(['jquery'], function(jQuery){
         (function() {
@@ -20,6 +23,7 @@ if ($pcaAccCode) { ?>
 
             magento.controls = magento.controls || [];
             magento.currentUrl = window.location.href;
+
             var capturePlusFields = [];
             
             pca.on('data', function(source, key, address, variations) {
@@ -45,7 +49,7 @@ if ($pcaAccCode) { ?>
                 }
             });
             
-            pca.on('options', function(options) {
+            pca.on('options', function(service, id, options) {
                 //
             });
             
@@ -85,37 +89,40 @@ if ($pcaAccCode) { ?>
                 switch (service) {
 
                     case 'capture+': 
-                        var newCPMappings = [];
-                        for (var i = 0; i < capturePlusMappings.length; i++) {
-                            var dynamicCPFields = document.getElementsByName(capturePlusMappings[i].element);
-                            if (dynamicCPFields && dynamicCPFields.length) {
-                                for (var cntr = 0; cntr < dynamicCPFields.length; cntr++) {
-                                    if (dynamicCPFields[cntr].id) {
-                                        var newMapping = {};
-                                        newMapping.field = capturePlusMappings[i].field;
-                                        newMapping.mode = capturePlusMappings[i].mode;
-                                        newMapping.element = dynamicCPFields[cntr].id;
-                                        newCPMappings.push(newMapping);
+
+                        if (!countryBlockLookup){
+                            var newCPMappings = [];
+                            for (var i = 0; i < capturePlusMappings.length; i++) {
+                                var dynamicCPFields = document.getElementsByName(capturePlusMappings[i].element);
+                                if (dynamicCPFields && dynamicCPFields.length) {
+                                    for (var cntr = 0; cntr < dynamicCPFields.length; cntr++) {
+                                        if (dynamicCPFields[cntr].id) {
+                                            var newMapping = {};
+                                            newMapping.field = capturePlusMappings[i].field;
+                                            newMapping.mode = capturePlusMappings[i].mode;
+                                            newMapping.element = dynamicCPFields[cntr].id;
+                                            newCPMappings.push(newMapping);
+                                        }
                                     }
                                 }
-                            }
-                            else {
-                                newCPMappings.push(capturePlusMappings[i]);
-                            }
-                        }
-                        fields.length = 0;
-                        for (var i = 0; i < newCPMappings.length; i++) {
-                            fields.push(newCPMappings[i]);
-                            var fieldAlreadyFound = false;
-                            for (var ii = 0; ii < capturePlusFields.length; ii++) {
-                                if (capturePlusFields[ii].element === newCPMappings[i].element) {
-                                    fieldAlreadyFound = true;
-                                    break;
+                                else {
+                                    newCPMappings.push(capturePlusMappings[i]);
                                 }
                             }
-                            if (fieldAlreadyFound != true) 
-                                capturePlusFields.push(newCPMappings[i]);
-                        } 
+                            fields.length = 0;
+                            for (var i = 0; i < newCPMappings.length; i++) {
+                                fields.push(newCPMappings[i]);
+                                var fieldAlreadyFound = false;
+                                for (var ii = 0; ii < capturePlusFields.length; ii++) {
+                                    if (capturePlusFields[ii].element === newCPMappings[i].element) {
+                                        fieldAlreadyFound = true;
+                                        break;
+                                    }
+                                }
+                                if (fieldAlreadyFound != true) 
+                                    capturePlusFields.push(newCPMappings[i]);
+                            } 
+                        }
                         break;
                         
                     case 'mobilevalidation':
