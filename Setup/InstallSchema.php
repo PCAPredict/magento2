@@ -31,11 +31,11 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
                     [ 'nullable' => true ],
                     'Account Token'
                 )->addColumn(
-                    'license_key',
+                    'pca_key',
                     \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
                     19,
                     [ 'nullable' => true ],
-                    'License Key'
+                    'Key'
                 )->addColumn(
                     'field_mappings',
                     \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,

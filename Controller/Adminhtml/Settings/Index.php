@@ -48,7 +48,7 @@
                                 $settingsData = $settings->load(1);
                                 $settingsData->setAccountCode('');
                                 $settingsData->setAccountToken('');
-                                $settingsData->setLicenseKey('');
+                                $settingsData->setPcaKey('');
                                 
                                 $settingsData->save();
                             }
@@ -63,7 +63,7 @@
                     case 'save':
                         $accCode = $this->getRequest()->getParam('account_code');
                         $accTok = $this->getRequest()->getParam('account_token');
-                        $licenseKey = $this->getRequest()->getParam('license_key');
+                        $pcaKey = $this->getRequest()->getParam('license_key');
 
                         $customjavascript = $this->getRequest()->getParam('custom_javascript');
                         $fieldmappings = $this->getRequest()->getParam('field_mappings');
@@ -74,7 +74,7 @@
                             $settingsData = $settings->load(1);
                             $settingsData->setAccountCode($accCode);
                             $settingsData->setAccountToken($accTok);
-                            $settingsData->setLicenseKey($licenseKey);
+                            $settingsData->setPcaKey($pcaKey);
 
                             $settingsData->setfieldMappings($fieldmappings);
                             $settingsData->setCustomJavascript($customjavascript);
@@ -90,11 +90,6 @@
                         throw new \Exception("Invalid action: " . $action);
                 }
             }
-            else
-            {
-                $this->getCurrentplanDetails();
-                $this->refreshSettingsFromPCAPredict();
-            }
 
             $page = $this->resultPageFactory->create();
             $page->setActiveMenu('PCAPredict_Tag::Settings');
@@ -105,64 +100,5 @@
         protected function _isAllowed()
         {
             return $this->_authorization->isAllowed('PCAPredict_Tag::settings');
-        } 
-
-
-        protected function getCurrentplanDetails() 
-        {
-            $settings = $this->settingsDataFactory->create();
-            $settingsData = $settings->load(1);
-
-            $pcaAccCode = $settingsData->getAccountCode();
-            $pcaToken = $settingsData->getAccountToken(); 
-
-            if ($pcaAccCode && $pcaToken) 
-            {
-                try {
-                    $reqBody = '{"AccountCode":"' . $pcaAccCode . '"}';
-                    $client = $this->httpClientFactory->create();
-                    $client->setUri('https://app_api.pcapredict.com/api/accountplan');
-                    $client->setConfig(['maxredirects' => 0, 'timeout' => 30]);
-                    $client->setHeaders(['Content-Type: application/json', 'Authorization: Basic ' . base64_encode($pcaAccCode.':'.$pcaToken)]);
-                    $client->setMethod(\Zend_Http_Client::POST);
-                    $client->setRawData($reqBody);
-                    $responseBody = $client->request()->getBody();
-                    $jData = json_decode($responseBody);
-                    
-                    $settingsData->save();
-
-                } catch (\Exception $e) {
-                    
-                }
-            }
-        }
-        
-        protected function refreshSettingsFromPCAPredict() 
-        {
-            $settings = $this->settingsDataFactory->create();
-            $settingsData = $settings->load(1);
-            $pcaAccCode = $settingsData->getAccountCode();
-            $pcaToken = $settingsData->getAccountToken();
-            $pcaLicenseKey = $settingsData->getLicenseKey();                
-            if ($pcaAccCode && $pcaToken && $pcaLicenseKey) 
-            {
-                
-                try {
-                    $reqBody = '{"Key":"' . $pcaLicenseKey . '"}';
-                    $client = $this->httpClientFactory->create();
-                    $client->setUri('https://app_api.pcapredict.com/api/getlicensedetails');
-                    $client->setConfig(['maxredirects' => 0, 'timeout' => 30]);
-                    $client->setHeaders(['Content-Type: application/json', 'Authorization: Basic ' . base64_encode($pcaAccCode.':'.$pcaToken)]);
-                    $client->setMethod(\Zend_Http_Client::POST);
-                    $client->setRawData($reqBody);
-                    $responseBody = $client->request()->getBody();
-                    $jData = json_decode($responseBody);
-                    
-                    $settingsData->save();
-
-                } catch (\Exception $e) {
-                    
-                }
-            }
         }
     }

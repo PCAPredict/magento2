@@ -65,11 +65,11 @@ class SettingsData extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
 
-    public function getLicenseKey()
+    public function getPcaKey()
     {
         $settings = $this->settingsDataFactory->create();
         $this->settingsData = $settings->load(1);
-        return $this->settingsData->getLicenseKey();
+        return $this->settingsData->getPcaKey();
     }
 
     public function getDefaultMappings() 

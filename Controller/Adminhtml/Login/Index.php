@@ -27,14 +27,14 @@ class Index extends \Magento\Backend\App\AbstractAction {
 
         $accCode = $this->getRequest()->getParam('account_code');
         $accTok = $this->getRequest()->getParam('account_token');
-        $licenseKey = $this->getRequest()->getParam('license_key');
+        $pcaKey = $this->getRequest()->getParam('license_key');
         $settings = $this->settingsDataFactory->create();
         try 
         {
             $settingsData = $settings->load(1);
             $settingsData->setAccountCode($accCode);
             $settingsData->setAccountToken($accTok);
-            $settingsData->setLicenseKey($licenseKey);
+            $settingsData->setPcaKey($pcaKey);
             $settingsData->save();
         }
         catch(\Exception $ex) 

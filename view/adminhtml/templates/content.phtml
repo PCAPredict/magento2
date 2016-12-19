@@ -4,7 +4,7 @@ $pcaSettings = $this->helper('PCAPredict\Tag\Helper\SettingsData');
 
 $pcaAccCode = $pcaSettings->getAccountCode();
 $pcaToken = $pcaSettings->getAccountToken();
-$pcaLicenseKey = $pcaSettings->getLicenseKey();
+$pcaKey = $pcaSettings->getPcaKey();
 
 $pcaMappings = $pcaSettings->getFieldMappings();
 $pcaCustomJS = $pcaSettings->getCustomJavaScript();
@@ -49,10 +49,10 @@ $pcaCustomJS = $pcaSettings->getCustomJavaScript();
 
                     <div class="row">
                         <div class="col-xs-3">
-                            <label>Licence Key</label>
+                            <label>Key</label>
                         </div>
                         <div class="col-xs-5">
-                            <label><?php echo $pcaLicenseKey; ?></label>
+                            <label><?php echo $pcaKey; ?></label>
                         </div>
                     </div>
 
@@ -180,7 +180,7 @@ $pcaCustomJS = $pcaSettings->getCustomJavaScript();
                             "action": 'save',
                             "account_code": "<?php echo $pcaAccCode; ?>",
                             "account_token": "<?php echo $pcaToken; ?>",
-                            "license_key": "<?php echo $pcaLicenseKey; ?>",
+                            "license_key": "<?php echo $pcaKey; ?>",
                             "custom_javascript": $('#customjavascript').val(),
                             "field_mappings": $('#fieldmappings').val()
                         }
@@ -291,7 +291,7 @@ $pcaCustomJS = $pcaSettings->getCustomJavaScript();
                             })
                             .fail(function(result){
                                 $('.pcapredict-message')
-                                    .text('Sorry, there was a problem creating your licence. Please email support@pcapredict.com')
+                                    .text('Sorry, there was a problem creating your key. Please email support@pcapredict.com')
                                     .addClass('pcapredict-message-error')
                                     .slideDown(500, function(){
                                         hidePCAMessage(5000, 500);
