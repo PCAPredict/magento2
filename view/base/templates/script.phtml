@@ -49,10 +49,82 @@ if ($pcaAccCode) { ?>
                     }
                     pca.fire(el, 'change');
                 }
-            });
+            });            
             
-            pca.on('options', function(service, id, options) {
-                //
+            pca.on("options", function(service, id, options) {
+
+                if (id == "<?php echo $pcaKey; ?>") {
+
+                    var magentoCountriesAllowedListIso2Str = "<?php echo $allowedCountries->getSelectedCountries(); ?>";
+                    
+                    var magentoCountriesAllowedListIso2 = [];
+
+                    if (magentoCountriesAllowedListIso2Str != null && magentoCountriesAllowedListIso2Str != "undefined" && magentoCountriesAllowedListIso2Str != "")
+                    {
+                        magentoCountriesAllowedListIso2 = magentoCountriesAllowedListIso2Str.split(",");
+                    }
+
+                    // This property might not be initialised all the time, this is just to say we are forcing it here to represent an empty string so logic can resume as normal.
+                    var pcaCountriesAllowedListIso3Str = (options.CapturePlusCountryList == "undefined" || options.CapturePlusCountryList == null) ? "" : options.CapturePlusCountryList;
+
+                    // If a list of countries to allow is present in pca, then logic on this.
+                    if (pcaCountriesAllowedListIso3Str != "") {
+
+                        var pcaCountriesAllowedListIso3 = pcaCountriesAllowedListIso3Str.split(",");
+
+                        // For each pca country in the allowed list, check if it is in magento and if not then remove it.
+                        pcaCountriesAllowedListIso3.forEach(function(countryCode) {  // foreach polyfill for < IE 9
+
+                            // grab the iso2 to check in magento codes
+                            var countryCodeIso2 = pca.countries.find(function (element) { // .find() Polyfill included for IE
+                                return element.iso3.toUpperCase() == countryCode.toUpperCase();
+                            });
+                            
+                            // magento does not have the country in it's list.
+                            if (magentoCountriesAllowedListIso2.indexOf(countryCodeIso2.iso2) == -1) { //.indexOf() polyfill included for < IE9
+                                pcaCountriesAllowedListIso3.splice(pcaCountriesAllowedListIso3.indexOf(countryCode), 1);
+                            }
+
+                        }, this);
+
+                        options.CapturePlusCountryList = pcaCountriesAllowedListIso3.toString();
+
+                        // If we have now removed all the countries from the list then this means the pca sensor should not return results. 
+                        // This is because the magento shop has not setup the countries that the pca settings allow. 
+                        if (pcaCountriesAllowedListIso3.length == 0){
+
+                            // Alternative to commented out above.
+                            countryBlockLookup = true;
+                            pca.load();
+                        }
+                    } else {
+
+                        var iso2ConvertedIso3 = [];
+                        
+                        magentoCountriesAllowedListIso2.forEach(function(iso2Code) { // foreach polyfill for < IE 9
+                        
+                            // .find() Polyfill is top of javascript.
+                            var found = null;
+                            found = pca.countries.find(function (element) { // .find() Polyfill included for IE
+
+                                return element.iso2.toUpperCase() == iso2Code.toUpperCase();
+                            });
+
+                            if (found != null) {
+                                iso2ConvertedIso3.push(found.iso3);
+                            }
+                            else {
+                                // ISO2 Info see more at : https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Transitional_reservations
+                                // The problem is magento does not have the latest country list and has 246 codes. The standard is 249.
+                                // The disparity is 2 things. AN (Netherlands Antilles) is now split out to three other codes (BQ, CW, SX).
+                                // This would result in 248 countries in magento. The missing one is then South Sudan, magento has just sudan.
+                            }
+                        });
+
+                        // No countries in pca so this is saying allow all, then we restrict on what magento wants to restrict on instead.
+                        options.CapturePlusCountryList = iso2ConvertedIso3.toString();
+                    }
+                }
             });
             
             pca.on('restrictions', function (service, key, restrictions) {
@@ -94,7 +166,7 @@ if ($pcaAccCode) { ?>
 
             pca.on("fields", function(service, id, fields){
 
-                if (id == "<?php echo $pcaKey; ?>") {
+                if (id == "<?php echo $pcaKey; ?>" && !countryBlockLookup){
 
                     var capturePlusMappings = [];
                     var phoneMappings = [];
@@ -105,39 +177,17 @@ if ($pcaAccCode) { ?>
                     switch (service) {
 
                         case 'capture+': 
-
-                            if (!countryBlockLookup){
-                                var newCPMappings = [];
-                                for (var i = 0; i < capturePlusMappings.length; i++) {
-                                    var dynamicCPFields = document.getElementsByName(capturePlusMappings[i].element);
-                                    if (dynamicCPFields && dynamicCPFields.length) {
-                                        for (var cntr = 0; cntr < dynamicCPFields.length; cntr++) {
-                                            if (dynamicCPFields[cntr].id) {
-                                                var newMapping = {};
-                                                newMapping.field = capturePlusMappings[i].field;
-                                                newMapping.mode = capturePlusMappings[i].mode;
-                                                newMapping.element = dynamicCPFields[cntr].id;
-                                                newCPMappings.push(newMapping);
-                                            }
-                                        }
-                                    }
-                                    else {
-                                        newCPMappings.push(capturePlusMappings[i]);
-                                    }
+                            var newCPMappings = [];
+                            for (var i = 0; i < capturePlusMappings.length; i++) {
+                                var mapping = capturePlusMappings[i];
+                                var pcaMatchedField = pca.getElement(mapping.element);
+                                if(pcaMatchedField){
+                                    newCPMappings.push(mapping)
                                 }
-                                fields.length = 0;
-                                for (var i = 0; i < newCPMappings.length; i++) {
-                                    fields.push(newCPMappings[i]);
-                                    var fieldAlreadyFound = false;
-                                    for (var ii = 0; ii < capturePlusFields.length; ii++) {
-                                        if (capturePlusFields[ii].element === newCPMappings[i].element) {
-                                            fieldAlreadyFound = true;
-                                            break;
-                                        }
-                                    }
-                                    if (fieldAlreadyFound != true) 
-                                        capturePlusFields.push(newCPMappings[i]);
-                                } 
+                            }
+                            fields.length = 0;
+                            for (var i = 0; i < newCPMappings.length; i++) {
+                                fields.push(newCPMappings[i]);
                             }
                             break;
                             
