@@ -3,12 +3,8 @@
     <acl>
         <resources>
             <resource id="Magento_Backend::admin">
-                <resource id="Magento_Backend::stores">
-                    <resource id="Magento_Backend::stores_settings">
-                        <resource id="Magento_Config::config">
-                            <resource id="PCAPredict_Tag::configuration" title="PCA Predict Tag" />
-                        </resource>
-                    </resource>
+                <resource id="Magento_Backend::other_settings">
+                    <resource id="PCAPredict_Tag::settings" title="PCAPredictTag" />
                 </resource>
             </resource>
         </resources>

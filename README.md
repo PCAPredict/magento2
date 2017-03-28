@@ -1,39 +1,38 @@
-#PCA Predict Magento 2 Integration
-##Quick instructions
+# **Manual Install**
 
-###Manual Install
-- Create folder structure /app/code/PCAPredict/Tag/
+## From Git
+- Locate the **/app/code** directory which should be under the magento root installation.
+- If the **code** folder is not there, create it.
+- Create a folder **PCAPredict** inside the **code** folder. 
+- Change to the **PCAPredict** folder and clone the Git repository (https://github.com/pcapredict/magento2.git) into **PCAPredict** specifying the local repository folder to be **Tag** 
+e.g. ``` git clone https://github.com/pcapredict/magento2.git Tag```
 
-####From Git
-- Clone the Git repository (https://github.com/pcapredict/magento2.git) to the folder you just created
+## From ZIP File
+- Locate the **/app/code** directory which should be under the magento root installation.
+- If the **code** folder is not there, create it.
+- Create the folder structure **PCAPredict/Tag/** inside the **code** folder. 
+- Extract the contents of the .ZIP file to the **Tag** folder you just created.
 
-####From a .ZIP file
-- Download the .ZIP file from the [PCA Predict website](http://go.postcodeanywhere.com/l/52622/2016-03-15/b2zm2r "PCA Predict")
-- Extract the contents of the .ZIP file to the folder you just created
-
-####Composer Installation
-- Add the repository to your list of respositories:<br />
-<pre>composer config repositories.pca-predict vcs https://github.com/PCAPredict/magento2.git</pre>
-- Pull in the latest version:<br />
-<pre>composer require pcapredict/tag:^1.0.8</pre>
-
-#### Run install commands:
+## Magento Setup
+- Make sure you have the correct file and folder permissions set on your magento installation so that the magnento store can install the app.
+- Refer to the Magento 2 documentation for full instructions on how to install an app, the commands should be similar to the following:
 ```
+# This tells magento to install the app.
 php bin/magento setup:upgrade
 ```
-- You may need to run the following command to flush the Magento cache:
 ```
+# You may need to run the following command to flush the Magento cache so the app works correctly:
 php bin/magento cache:flush
 ```
 
-##Configuration Instructions
-The configuration for the extension is located under Stores > Configuration > PCA Predict > Settings.
+# **App Configuration Options**
 
-Once you have entered your PCA Predict Account Code, visit your PCA Predict Account Dashboard to set up Address Validation, and (optional) Email & Phone Validation services, following the setup instructions to configure each new service on your website.
+The configuration for the extension is located under *Stores* > *Other Settings* > **PCA Predict Settings**.
 
- 
+## Main screen
+- Account Code - Enter your PCAPredict Account Code here.
+- Password - The password you used when you setup the account.
 
-### Main Options
-- Account Code - Enter your PCA Predict Account Code here.
-- Field Mappings - These are some custom field mappings that allow our services to work in Magento 2. Normally, you shouldn't need to change these, but can do so if instructed by the PCA Predict Support team or your developer
-
+## Logged in screen
+- Back-end custom javascript - This is for any custom javascript to be injected into the back-end of the website when the app loads.
+- Front-end custom javascript - This is for any custom javascript to be injected into the front-end of the website when the app loads.

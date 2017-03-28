@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2016 PCA Predict. All rights reserved.
+ * Copyright © 2017 PCA Predict. All rights reserved.
  */
 \Magento\Framework\Component\ComponentRegistrar::register(
     \Magento\Framework\Component\ComponentRegistrar::MODULE,

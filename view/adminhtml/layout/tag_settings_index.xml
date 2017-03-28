@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="PCAPredict_Tag::css/tag.css"/>
+    </head>
+    <referenceBlock name="content">
+        <block class="PCAPredict\Tag\Block\Adminhtml\Main" name="pcapredict_tag_block_main" template="tag_settings_index_script.phtml" />
+    </referenceBlock>
+</page>

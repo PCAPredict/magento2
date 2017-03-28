@@ -1,0 +1,19 @@
+<?php
+    $pcaSettings = $this->helper('PCAPredict\Tag\Helper\SettingsData');
+    $pcaAccCode = $pcaSettings->getAccountCode();
+
+    if ($pcaAccCode) { 
+?>
+
+<script type="text/javascript">
+
+    requirejs(['jquery'], function(){
+
+        (function() {
+            pca.magento.setupCheckout();
+        })();
+    });
+  
+</script>
+
+<?php }

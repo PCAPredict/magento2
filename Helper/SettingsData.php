@@ -1,57 +1,52 @@
 <?php
+
 namespace PCAPredict\Tag\Helper;
 
-class SettingsData extends \Magento\Framework\App\Helper\AbstractHelper
-{
+use Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Framework\App\Helper\Context;
+use Magento\Framework\Escaper;
 
-	/** @var \Magento\Framework\Escaper */
+use PCAPredict\Tag\Model\SettingsDataFactory;
+
+class SettingsData extends AbstractHelper
+{
 	protected $escaper;
     
-	/**
-	 * @param \Magento\Framework\App\Helper\Context $context
-	 * @param \Magento\Framework\Escaper $escaper
-	 */
-	public function __construct(
-		\Magento\Framework\App\Helper\Context $context,
-		\Magento\Framework\Escaper $escaper
-	) {
+    protected $settingsDataFactory;
+
+	public function __construct(Context $context, Escaper $escaper, SettingsDataFactory $settingsDataFactory) {
 		$this->escaper = $escaper;
+        $this->settingsDataFactory = $settingsDataFactory;
 		parent::__construct($context);
 	}
-
-    /**
-     * @return array|string
-     */
-    public function getAccountCode()
+    
+    public function getAccountCode() 
     {
+        $settings = $this->settingsDataFactory->create();
+        $this->settingsData = $settings->load(1);
         return $this->escaper->escapeHtml(
-            $this->scopeConfig->getValue(
-                'pca_settings_section/settings/account_code',
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-            )
+            $this->settingsData->getAccountCode()
         );
     }
 
-    /**
-     * @return string|null
-     */
-    public function getFieldMappings() 
+    public function getAccountToken()
     {
-        return $this->scopeConfig->getValue(
-            'pca_settings_section/settings/field_mappings',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-        );
+        $settings = $this->settingsDataFactory->create();
+        $this->settingsData = $settings->load(1);
+        return $this->settingsData->getAccountToken();
     }
 
-
-    /**
-     * @return string|null
-     */
-    public function getCustomJavaScript()
+    public function getCustomJavaScriptFront()
     {
-        return $this->scopeConfig->getValue(
-            'pca_settings_section/settings/custom_javascript',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-        );
+        $settings = $this->settingsDataFactory->create();
+        $this->settingsData = $settings->load(1);
+        return $this->settingsData->getCustomJavascriptFront();
+    }
+
+    public function getCustomJavaScriptBack()
+    {
+        $settings = $this->settingsDataFactory->create();
+        $this->settingsData = $settings->load(1);
+        return $this->settingsData->getCustomJavascriptBack();
     }
 }

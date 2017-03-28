@@ -1,8 +1,18 @@
 # Release notes
 
+## v2.0.1
+
+- Updated app store description and link to setup guide.
+
+## v2.0.0
+
+- Re-write to use more of the pca field mapping logic and less custom code.
+- User can log in with their account code and password, which will generate a set 
+  of keys to get Address, Email and Phone running in both Admin area and Customer facing site.
+
 ## v1.0.8
 
-- load js with requirejs 
+- load js with requirejs
 
 ## v1.0.7
 
@@ -40,4 +50,4 @@
 
 ## v1.0.0
 
-Initial release.
+- Initial release.
