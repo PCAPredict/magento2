@@ -11,7 +11,8 @@ e.g. ``` git clone https://github.com/pcapredict/magento2.git Tag```
 - Locate the **/app/code** directory which should be under the magento root installation.
 - If the **code** folder is not there, create it.
 - Create the folder structure **PCAPredict/Tag/** inside the **code** folder. 
-- Extract the contents of the .ZIP file to the **Tag** folder you just created.
+- Download the latest release from the github site (https://github.com/PCAPredict/magento2/releases/tag/v2.0.1).
+- Extract the zip contents to the **Tag** folder you just created. The README.md and all other files and folders should be under the **Tag** folder.
 
 ### If your using Composer
 - Integrated with Packagist, so you should be able to get the latest version with:
