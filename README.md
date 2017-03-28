@@ -14,9 +14,7 @@ e.g. ``` git clone https://github.com/pcapredict/magento2.git Tag```
 - Extract the contents of the .ZIP file to the **Tag** folder you just created.
 
 ### If your using Composer
-- Add the repository to your list of respositories:
-```composer config repositories.pca-predict vcs https://github.com/PCAPredict/magento2.git```
-- Pull in the latest version:
+- Integrated with Packagist, so you should be able to get the latest version with:
 ```composer require pcapredict/tag:^2.0.1```
 
 ### Magento Setup
