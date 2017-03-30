@@ -1,5 +1,10 @@
 # Release notes
 
+## v2.0.2
+
+- UI wording.
+- ACL Bug Fix.
+
 ## v2.0.1
 
 - Updated app store description and link to setup guide.

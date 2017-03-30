@@ -92,6 +92,6 @@ class Index extends Action {
 
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('PCAPredict_Tag::settings');
+        return $this->_authorization->isAllowed('PCAPredict_Tag::Settings');
     }
 }
