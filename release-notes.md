@@ -1,5 +1,10 @@
 # Release notes
 
+## v2.0.3
+
+- Bug with the template minify - we specify url as "//<?php echo pcaAcc... which is being deleted when minified.
+- Changed the template for checkout to use head.additional now to load content instead of at the end of the body.
+
 ## v2.0.2
 
 - UI wording.

@@ -15,7 +15,7 @@
             a[b] = a[b] || {}; a[b].initial = { accountCode: "<?php echo $pcaAccCode; ?>", host: "<?php echo $pcaAccCode; ?>.pcapredict.com" };
             a[b].on = a[b].on || function () { (a[b].onq = a[b].onq || []).push(arguments) }; var d = c.createElement("script");
             d.async = !0; d.src = e; c = c.getElementsByTagName("script")[0]; c.parentNode.insertBefore(d, c)
-            })(window, document, "pca", "//<?php echo $pcaAccCode; ?>.pcapredict.com/js/sensor.js");
+            })(window, document, "pca", "/" + "/<?php echo $pcaAccCode; ?>.pcapredict.com/js/sensor.js");
 
             pca.magento = pca.magento || {};
             pca.magento.currentUrl = window.location.href;

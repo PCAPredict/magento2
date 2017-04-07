@@ -4,12 +4,12 @@
 @SET @CURR_DIR= "Tag"
 
 @REM Try to delete the file only if it exists
-@IF EXIST %@CURR_DIR%.tgz GOTO DELETE
-@echo No archive with name '%@CURR_DIR%.tgz' currently exists, will create new archive.
+@IF EXIST %@CURR_DIR%.zip GOTO DELETE
+@echo No archive with name '%@CURR_DIR%.zip' currently exists, will create new archive.
 @GOTO CREATE 
 
 :DELETE
-@del /F %@CURR_DIR%.tgz
+@del /F %@CURR_DIR%.zip
 @printf \n
 @echo Deleted old archive.
 
@@ -24,7 +24,7 @@
 
 :ERROR 
 @printf \n
-@echo %@CURR_DIR%.tgz could not be created, existing one could not be deleted.
+@echo %@CURR_DIR%.zip could not be created, existing one could not be deleted.
 @GOTO FINISH
 
 :NO7ZIP
@@ -34,6 +34,6 @@
 
 :SUCCESS
 @printf \n
-@echo %@CURR_DIR%.tgz Created Successfully.
+@echo %@CURR_DIR%.zip Created Successfully.
 
 :FINISH
