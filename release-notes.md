@@ -1,5 +1,11 @@
 # Release notes
 
+## v2.0.4
+
+- Pulled in fix for settings save.
+- Updated composer to not include core as magento marketplace does not apply for wildcard versioning.
+
+
 ## v2.0.3
 
 - Bug with the template minify - we specify url as "//<?php echo pcaAcc... which is being deleted when minified.
