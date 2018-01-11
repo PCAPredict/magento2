@@ -10,7 +10,9 @@
     requirejs(['jquery'], function(){
 
         (function() {
-            pca.magento.setupCheckout();
+            if (typeof pca !== "undefined") {
+                pca.magento.setupCheckout();
+            }
         })();
     });
   
