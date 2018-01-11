@@ -1,5 +1,11 @@
 # Release notes
 
+## v2.0.5
+
+- Fix "order is not defined" error
+- Check for PCA object existence on checkout
+- Supports PHP 7.1 for composer installations
+
 ## v2.0.4
 
 - Pulled in fix for settings save.
