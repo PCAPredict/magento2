@@ -1,5 +1,9 @@
 # Release notes
 
+## v2.0.6
+
+- Version number bump for packagist
+
 ## v2.0.5
 
 - Fix "order is not defined" error
