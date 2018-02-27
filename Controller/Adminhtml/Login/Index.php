@@ -24,6 +24,7 @@ class Index extends AbstractAction {
         $accCode = $this->getRequest()->getParam('account_code');
         $accTok = $this->getRequest()->getParam('account_token');
         $settings = $this->settingsDataFactory->create();
+        
         try 
         {
             $settingsData = $settings->load(1);
@@ -33,7 +34,7 @@ class Index extends AbstractAction {
         }
         catch(\Exception $ex) 
         {
-            return $result->setData(['success' => false]);
+            return $result->setData(['success' => false, 'exception' => $ex->getMessage()]);
         }
 
 		return $result->setData(['success' => true]);

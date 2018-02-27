@@ -16,7 +16,7 @@ e.g. ``` git clone https://github.com/pcapredict/magento2.git Tag```
 
 ### If your using Composer
 - Integrated with Packagist, so you should be able to get the latest version with:
-```composer require pcapredict/tag:^2.0.1```
+```composer require pcapredict/tag:^2.0.7```
 
 ### Magento Setup
 - Make sure you have the correct file and folder permissions set on your magento installation so that the magnento store can install the app.
