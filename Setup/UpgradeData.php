@@ -12,9 +12,9 @@ class UpgradeData implements UpgradeDataInterface {
     public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context ) {
         
         // Take all current records and set the current version of the app as the module_version.
-        // Tidy up by taking either the row which has id 1 as this was what the old logic looked for.
-        // If there is id=1 then simply keep the row with the latest creation time as this logic is what will 
-        // be used when checking for credentials, even though one record will still only be needed.
+        // We will now fetch a record based on the last created time and not an id.
+        // It was likely that with previous versions, if login/key setup failed at any point it would write a row but go back to the login screen,
+        // thus subsquent attempts caused more rows to be written.
         if (version_compare($context->getVersion(), '2.0.7') < 0) {
 
             $tableName = $setup->getTable('pcapredict_tag_settingsdata');
@@ -29,18 +29,6 @@ class UpgradeData implements UpgradeDataInterface {
                 // Because we do not know what vesion they logged in under set to the last version will have to do.
                 $setup->updateTableRow($tableName, 'id', $row['id'], 'module_version', $context->getVersion());
             }
-
-            $select = $setup->getConnection()->select()->from($tableName)->where('id = 1');
-
-            $row = $this->setup->getConnection()->fetchOne($select);
-
-            var_dump($row);
-
-            $select2 = $setup->getConnection()->select()->from($tableName)->where('id = 2');
-
-            $row2 = $this->setup->getConnection()->fetchOne($select2);
-
-            var_dump($row2);
         }
     }
 }

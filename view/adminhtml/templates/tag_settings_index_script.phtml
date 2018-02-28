@@ -10,7 +10,6 @@ $pcaToken = $pcaSettings->getAccountToken();
 $pcaCustomJSFront = $pcaSettings->getCustomJavaScriptFront();
 $pcaCustomJSBack = $pcaSettings->getCustomJavaScriptBack();
 
-$version = $context->getVersion();
 ?>
 
 
@@ -94,7 +93,7 @@ $version = $context->getVersion();
                         </div>
                     </div>
 
-                    <div style="float: right; margin-right: -40px; font-size: 10px;"><?php echo strtoupper($version); ?></div>
+                    <div style="float: right; margin-right: -40px; font-size: 10px;"><?php echo $context->getVersion(); ?></div>
                 </fieldset>
             </form>
         </div>
@@ -150,7 +149,7 @@ $version = $context->getVersion();
                     </div>
                     <!-- Version of the app in the display. -->
                     <div style="margin-top: 25px;" class="secure-container-footer">
-                        <div style="float: right; margin-right: -40px; font-size: 10px;"><?php echo strtoupper($version); ?></div>
+                        <div style="float: right; margin-right: -40px; font-size: 10px;"><?php echo $context->getVersion(); ?></div>
                     </div>           
                 </fieldset>
             </form>
