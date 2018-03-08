@@ -1,7 +1,7 @@
 <?php
 /** 
  * @var $block \Magento\Backend\Block\Template 
- * @var $context \Magento\Framework\Setup\ModuleContextInterface
+ * @var $context \Magento\Framework\Module\ResourceInterface
 */
 
 $pcaSettings = $this->helper('PCAPredict\Tag\Helper\SettingsData');
@@ -9,7 +9,7 @@ $pcaAccCode = $pcaSettings->getAccountCode();
 $pcaToken = $pcaSettings->getAccountToken();
 $pcaCustomJSFront = $pcaSettings->getCustomJavaScriptFront();
 $pcaCustomJSBack = $pcaSettings->getCustomJavaScriptBack();
-
+$moduleVersion = $pcaSettings->getModuleVersion();
 ?>
 
 
@@ -93,7 +93,7 @@ $pcaCustomJSBack = $pcaSettings->getCustomJavaScriptBack();
                         </div>
                     </div>
 
-                    <div style="float: right; margin-right: -40px; font-size: 10px;"><?php echo $context->getVersion(); ?></div>
+                    <div style="float: right; margin-right: -40px; font-size: 10px;"><?php echo $moduleVersion; ?></div>
                 </fieldset>
             </form>
         </div>
@@ -149,7 +149,7 @@ $pcaCustomJSBack = $pcaSettings->getCustomJavaScriptBack();
                     </div>
                     <!-- Version of the app in the display. -->
                     <div style="margin-top: 25px;" class="secure-container-footer">
-                        <div style="float: right; margin-right: -40px; font-size: 10px;"><?php echo $context->getVersion(); ?></div>
+                        <div style="float: right; margin-right: -40px; font-size: 10px;"><?php echo $moduleVersion; ?></div>
                     </div>           
                 </fieldset>
             </form>
@@ -422,4 +422,3 @@ $pcaCustomJSBack = $pcaSettings->getCustomJavaScriptBack();
             
     </script>
 </div>
-

@@ -27,7 +27,7 @@ class UpgradeData implements UpgradeDataInterface {
             {
                 // Set the new module_version column with the current of the app.
                 // Because we do not know what vesion they logged in under set to the last version will have to do.
-                $setup->updateTableRow($tableName, 'id', $row['id'], 'module_version', $context->getVersion());
+                $setup->updateTableRow($tableName, 'pcapredict_tag_settingsdata_id', $row['pcapredict_tag_settingsdata_id'], 'module_version', $context->getVersion());
             }
         }
     }

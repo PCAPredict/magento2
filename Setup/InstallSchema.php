@@ -18,7 +18,7 @@ class InstallSchema implements InstallSchemaInterface
             $setup->getTable('pcapredict_tag_settingsdata')
             )
             ->addColumn(
-                'id',
+                'pcapredict_tag_settingsdata_id',
                 Table::TYPE_INTEGER,
                 null,
                 [ 'identity' => true, 'nullable' => false, 'primary' => true, 'unsigned' => true ],

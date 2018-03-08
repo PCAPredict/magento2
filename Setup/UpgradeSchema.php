@@ -26,16 +26,6 @@ class UpgradeSchema implements UpgradeSchemaInterface
             // Check if the table already exists
             if ($setup->getConnection()->isTableExists($tableName) == true) {
 
-                // Alter the id name, to long for no reason at the moment.
-                $setup->getConnection()->changeColumn($tableName, 'pcapredict_tag_settingsdata_id', 'id', 
-                [
-                    'type' => Table::TYPE_INTEGER,
-                    'nullable' => false,
-                    'identity' => true,
-                    'primary' => true, 
-                    'unsigned' => true
-                ], false);
-
                 // Remove any columns we don't need.
                 $setup->getConnection()->dropColumn($tableName, 'update_time');
 

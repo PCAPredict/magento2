@@ -29,6 +29,12 @@ class SettingsData extends AbstractHelper
         );
     }
 
+    public function getModuleVersion()
+    {
+        return $this->_moduleList
+            ->getOne(self::MODULE_NAME)['setup_version'];
+    }
+
     public function getAccountToken()
     {
         $settings = $this->settingsDataFactory->create();

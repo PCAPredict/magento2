@@ -8,6 +8,6 @@ class SettingsData extends AbstractDb
 {
     protected function _construct()
     {
-        $this->_init('pcapredict_tag_settingsdata','id');
+        $this->_init('pcapredict_tag_settingsdata','pcapredict_tag_settingsdata_id');
     }
 }
