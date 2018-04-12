@@ -32,55 +32,42 @@ class Index extends Action {
         if ($this->getRequest()->isAjax()) 
         {
             $action = $this->getRequest()->getParam('action');
-            switch($action) 
+
+            if($action == 'save')
             {
-                case 'logout':
-                    try
-                    {
-                        $settings = $this->settingsDataFactory->create();
-                        $collection = $settings->getCollection();
-                        $data = $collection->getData();
-                        if ($data)
-                        {
-                            $settingsData = $settings->load(1);
-                            $settingsData->setAccountCode('');
-                            $settingsData->setAccountToken('');
-                            
-                            $settingsData->save();
-                        }
-                        $this->messageManager->addSuccess( __('You have successfully logged out from PCA Predict!') );
-                    }
-                    catch(\Exception $e)
-                    {
-                        $this->messageManager->addError( __('There was a problem logging out of PCA Predict!') );
-                    }
-                    break;
+                $customjavascriptfront = $this->getRequest()->getParam('custom_javascript_front');
+                $customjavascriptback = $this->getRequest()->getParam('custom_javascript_back');
 
-                case 'save':
-                    $accCode = $this->getRequest()->getParam('account_code');
-                    $accTok = $this->getRequest()->getParam('account_token');
-                    $customjavascriptfront = $this->getRequest()->getParam('custom_javascript_front');
-                    $customjavascriptback = $this->getRequest()->getParam('custom_javascript_back');
+                $settings = $this->settingsDataFactory->create();
 
+                try 
+                {
                     $settings = $this->settingsDataFactory->create();
-
-                    try 
-                    {
-                        $settingsData = $settings->load(1);
-                        $settingsData->setAccountCode($accCode);
-                        $settingsData->setAccountToken($accTok);
-                        $settingsData->setCustomJavascriptFront($customjavascriptfront);
-                        $settingsData->setCustomJavascriptBack($customjavascriptback);
-
-                        $settingsData->save();
+                    $itemCollection = $settings->getCollection();
+                    $items = $itemCollection->getData();
+    
+                    $lastCreationTime = null;
+                    $lastItemRow = null;
+    
+                    foreach ($items as $item) {
+                        if ($lastCreationTime == null || $lastCreationTime < $item['creation_time'])
+                        {
+                            $lastCreationTime = $item['creation_time'];
+                            $lastItemRow = $item;    
+                        }
                     }
-                    catch(\Exception $ex) 
-                    {
-                        var_dump($ex.getMessage);
-                    }
-                    break;
-                default:
-                    throw new \Exception("Invalid action: " . $action);
+
+                    $settings->load($lastItemRow['pcapredict_tag_settingsdata_id']);
+
+                    $settings->setCustomJavascriptFront($customjavascriptfront);
+                    $settings->setCustomJavascriptBack($customjavascriptback);
+
+                    $settings->save();
+                }
+                catch(\Exception $ex) 
+                {
+                    var_dump($ex.getMessage);
+                }
             }
         }
 

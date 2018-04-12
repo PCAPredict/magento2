@@ -10,14 +10,13 @@ use Magento\Framework\DB\Ddl\Table;
 class InstallSchema implements InstallSchemaInterface
 {
     public function install(SchemaSetupInterface $setup, ModuleContextInterface $context)
-    {
-        $installer = $setup;
-        $installer->startSetup();
+    {        
+        $setup->startSetup();
 
-        $tableName = $installer->getTable('pcapredict_tag_settingsdata');
-
-        $table = $installer->getConnection()
-            ->newTable($tableName)
+        $table = $setup->getConnection()
+        ->newTable(
+            $setup->getTable('pcapredict_tag_settingsdata')
+            )
             ->addColumn(
                 'pcapredict_tag_settingsdata_id',
                 Table::TYPE_INTEGER,
@@ -61,14 +60,15 @@ class InstallSchema implements InstallSchemaInterface
                 'Creation Time'
             )
             ->addColumn(
-                'update_time',
-                Table::TYPE_TIMESTAMP,
-                null,
-                [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE ],
-                'Modification Time'
+                'module_version',
+                Table::TYPE_TEXT,
+                16,
+                [ 'nullable' => true ],
+                'Created With App Version'
             );
 
-        $installer->getConnection()->createTable($table);
-        $installer->endSetup();
+        $setup->getConnection()->createTable($table);
+
+        $setup->endSetup();
     }
 }

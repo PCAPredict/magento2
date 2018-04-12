@@ -1,5 +1,13 @@
 # Release notes
 
+## v2.0.7
+
+- Reviewed and updated the way we store/clear out credentials and the upgrade process from each version.
+- Version number of the app is loaded from config, not static anymore.
+- Removed redundent code.
+- Split out the actions so login, logout and settings are separate controllers.
+- Added link to generate and download the custom javascript to a text file.
+
 ## v2.0.6
 
 - Version number bump for packagist
@@ -14,7 +22,6 @@
 
 - Pulled in fix for settings save.
 - Updated composer to not include core as magento marketplace does not apply for wildcard versioning.
-
 
 ## v2.0.3
 

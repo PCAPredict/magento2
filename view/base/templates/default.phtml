@@ -1,4 +1,7 @@
 <?php
+    // Find all .xml layout files that reference this. 
+    // Currently it's the front end all over (default.phtml) and the backend on the sales_order_address.phtml.
+
     $pcaSettings = $this->helper('PCAPredict\Tag\Helper\SettingsData');
     $pcaAccCode = $pcaSettings->getAccountCode();
     $pcaCustomJSFront = $pcaSettings->getCustomJavaScriptFront();
@@ -31,7 +34,6 @@
             };
 
             pca.on('data', function(source, key, address, variations) {
-                
                 switch (source) {
                     case "address":
                         if (pca.magento.checkout)
@@ -59,7 +61,12 @@
                 }
             });
 
-
+            // This bit of code was written to accommodate the Magento 2 DOM element fields with the same name and dynamic id's.
+            // We are doing the equivalent of the following : 
+            // 1) Recording the amount of times the address fields are on the page, e.g. How many times is the "Postcode" element on the page.
+            // 2) Taking each set in turn and getting the dynamic id's that relate to the names. e.g. <input name="postcode" id="D6G65BGS" ...
+            // 3) For each of those id's we rewrite the mappings for a key. Control[Index].Mappings.Postcode = BGH34DF (pseudo-code)
+            // 4) Reload the controls - this should then reduce down the number of found mappings as they have been re-written to the new id's.
             var loadHitCounter = 0;
             pca.on("load", function(type, key, control){
                 if(type == "capture+"){
@@ -70,7 +77,6 @@
                         if(document.getElementById(control.fields[f].element)){
                             //ignore
                         }else{
-
                             var elementsMatchedByName = document.getElementsByName(control.fields[f].element);
 
                             if(elementsMatchedByName.length > loadHitCounter){
@@ -78,8 +84,6 @@
                             }else{
                                 control.fields[f].element = "wait_" + control.fields[f].element;
                             }
-
-                            
                         }
                     }
                     control.reload();
@@ -132,6 +136,8 @@
                     }                    
                 }
                 
+                // This is so we can reload the mappings to find the next set of address fields.
+                // NOTE - Monitor Fields and Continual Field Search could potenially remove this.
                 if (pca.magento.checkout) {
                     pca.magento.checkUrlChange();
                 }
@@ -147,9 +153,10 @@
                 }
             };
 
+            // Checks for the dynamic fields are on the page - Means we will need to reload the view to perform the dynamic mapping above.
             pca.magento.dynamicMagentoFieldsExist = function() {
                 
-                var isDynamicRegExp = new RegExp("^[A-Z0-9]{7}$");
+                var isDynamicRegExp = new RegExp("^[A-Z0-9]{7}$"); // Magento 2 - 7 character dynamic id's.
                 var col = document.getElementsByTagName("*");
 
                 for (var i = 0; i < col.length; i++) {

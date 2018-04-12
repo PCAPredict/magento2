@@ -23,13 +23,6 @@ class InstallData implements InstallDataInterface
     
     public function install(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
-        $settings = $this->settingsDataFactory->create();
-
-        $settings->setAccountCode('');
-        $settings->setAccountToken('');
-        $settings->setCustomJavascriptFront('');
-        $settings->setCustomJavascriptBack('');
-        
-        $settings->save();
+        // No need to install any data, all customer set.
     }
 }

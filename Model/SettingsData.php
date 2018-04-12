@@ -5,7 +5,7 @@ namespace PCAPredict\Tag\Model;
 use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\DataObject\IdentityInterface;
 
-class SettingsData extends AbstractModel implements SettingsDataInterface, IdentityInterface
+class SettingsData extends AbstractModel implements IdentityInterface
 {
     const CACHE_TAG = 'pcapredict_tag_settingsdata';
 
