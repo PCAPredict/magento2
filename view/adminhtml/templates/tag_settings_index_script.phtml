@@ -1,7 +1,6 @@
 <?php
 /** 
  * @var $block \Magento\Backend\Block\Template 
- * @var $context \Magento\Framework\Module\ResourceInterface
 */
 
 $pcaSettings = $this->helper('PCAPredict\Tag\Helper\SettingsData');
@@ -11,7 +10,6 @@ $pcaCustomJSFront = $pcaSettings->getCustomJavaScriptFront();
 $pcaCustomJSBack = $pcaSettings->getCustomJavaScriptBack();
 $moduleVersion = $pcaSettings->getModuleVersion();
 ?>
-
 
 <div class="pcapredict-container">
 
@@ -90,6 +88,8 @@ $moduleVersion = $pcaSettings->getModuleVersion();
                         </div>
                         <div class="col-xs-8">
                             <comment>Logging out will stop PCA Predict from working in your site. You can log back in at any time.</comment>
+                            <br />
+                            <comment>Make sure to <a href="javascript://Save as TXT" id="customCodeBackup">backup</a> your custom code first!</comment>
                         </div>
                     </div>
 
@@ -175,8 +175,6 @@ $moduleVersion = $pcaSettings->getModuleVersion();
                         data: { 
                             "form_key": window.FORM_KEY,
                             "action": 'save',
-                            "account_code": "<?php echo $pcaAccCode; ?>",
-                            "account_token": "<?php echo $pcaToken; ?>",
                             "custom_javascript_front": $('#customjavascript_front').val(),
                             "custom_javascript_back": $('#customjavascript_back').val()
                         }
@@ -187,26 +185,25 @@ $moduleVersion = $pcaSettings->getModuleVersion();
                             .text('Your settings were saved.')
                             .removeClass('pcapredict-message-error')
                             .addClass('pcapredict-message-success')
-                            .slideDown(500, function(){
-                                hidePCAMessage(5000, 500);
-                            });                      
+                            .slideDown(500);                      
                     })
                     .fail(function(result){
                         $('.pcapredict-message')
                             .text('Sorry, there was a problem saving the settings.')
                             .removeClass('pcapredict-message-success')
                             .addClass('pcapredict-message-error')
-                            .slideDown(500, function(){
-                                hidePCAMessage(5000, 500);
-                            });
+                            .slideDown(500);
                     })
-                    .always(function(){
+                    .always(function(_){
+                        hidePCAMessage(2000, 500);
                         $('#btnSave').removeClass('working'); 
                     });
                 });
 
                 $('#formLogIn').on('submit', function(){ 
-                    $('#btnLogIn').addClass('working');           
+                    
+                    $('#btnLogIn').addClass('working');      
+
                     $.ajax({
                         showLoader: true,
                         type: 'POST',
@@ -227,9 +224,7 @@ $moduleVersion = $pcaSettings->getModuleVersion();
                         if(result.accounts && Object.keys(result.accounts).length > 0) {
 
                             var token = result.token.token;
-
                             var accountCode = $('#accountCode').val();
-
                             var auth = btoa(accountCode + ':' + token);
 
                             $.ajax({
@@ -242,7 +237,7 @@ $moduleVersion = $pcaSettings->getModuleVersion();
                                     'Authorization': 'Basic ' + auth
                                 }
                             })
-                            .done(function(result){
+                            .done(function(result2){
                                 $.ajax({
                                     type: 'POST',
                                     url: '<?php echo $block->getUrl('tag/login'); ?>',
@@ -250,53 +245,43 @@ $moduleVersion = $pcaSettings->getModuleVersion();
                                     data: { 
                                         "form_key": window.FORM_KEY,
                                         "account_code": accountCode,
-                                        "account_token": token
+                                        "account_token": token,
+                                        "module_version": '<?php echo $moduleVersion; ?>'
                                     }
                                 })
-                                .done(function(result){
-                                    if(result.success) {
+                                .done(function(result3){
 
+                                    var classToAdd = 'pcapredict-message-success';
+                                    var classToRemove = 'pcapredict-message-error';
+                                    var msg = 'Logging into the extension...';
+
+                                    if(!result3.success) {
+                                        classToAdd = 'pcapredict-message-error';
+                                        classToRemove = 'pcapredict-message-success';
+                                        msg = 'There was an error logging into the extension';
                                     }
-                                    else {
-                                        $('.pcapredict-message')
-                                            .text('The magento store has reported that there was a problem saving the login data.')
-                                            .removeClass('pcapredict-message-success')
-                                            .addClass('pcapredict-message-error')
-                                            .slideDown(500, function(){
-                                                hidePCAMessage(5000, 500);
-                                            });
-                                    }                                                                
-                                })
-                                .fail(function(result){
+                                    
                                     $('.pcapredict-message')
-                                        .text('Sorry, there was a problem saving your login data to the magento store.')
-                                        .removeClass('pcapredict-message-success')
-                                        .addClass('pcapredict-message-error')
-                                        .slideDown(500, function(){
-                                            hidePCAMessage(5000, 500);
-                                        });
+                                        .text(msg)
+                                        .removeClass(classToRemove)
+                                        .addClass(classToAdd)
+                                        .slideDown(500);                                                
                                 })
-                                .always(function(){
-                                    window.location.reload(true);
-                                });
+                                .fail(failMagentoCall);
                             })
-                            .fail(function(result){
+                            .fail(function(result2){
                                 $('.pcapredict-message')
                                     .text('Sorry, there was a problem creating your keys. Please email support@pcapredict.com')
                                     .removeClass('pcapredict-message-success')
                                     .addClass('pcapredict-message-error')
-                                    .slideDown(500, function(){
-                                        hidePCAMessage(5000, 500);
-                                    });
+                                    .slideDown(500);
                             });
                         } else {
                             $('.pcapredict-message')
-                                    .text('Sorry, there is an error with the response from authentication. Please email support@pcapredict.com')
-                                    .removeClass('pcapredict-message-success')
-                                    .addClass('pcapredict-message-error')
-                                    .slideDown(500, function(){
-                                        hidePCAMessage(5000, 500);
-                                    });
+                                .text('Sorry, there is an error with the response from authentication. Please email support@pcapredict.com')
+                                .removeClass('pcapredict-message-success')
+                                .addClass('pcapredict-message-error')
+                                .slideDown(500);
                         }
                     })
                     .fail(function(result){
@@ -307,13 +292,11 @@ $moduleVersion = $pcaSettings->getModuleVersion();
                             .text('Sorry, your account code or password was not recognized. Please try again.')
                             .removeClass('pcapredict-message-success')
                             .addClass('pcapredict-message-error')
-                            .slideDown(500, function(){
-                                hidePCAMessage(10000, 1000);
-                            });
-
+                            .slideDown(500);
                     })
                     .always(function(){
                         $('#btnLogIn').removeClass('working'); 
+                        hideMessageAndReload(5000);
                     });
                 });
 
@@ -326,49 +309,15 @@ $moduleVersion = $pcaSettings->getModuleVersion();
 
                     $.ajax({
                         type: 'POST',
-                        url: '<?php echo $block->getUrl('tag/settings'); ?>',
+                        url: '<?php echo $block->getUrl('tag/logout'); ?>',
                         showLoader: true,                    
                         data: { 
-                            "form_key": window.FORM_KEY,
-                            "action": 'logout'
+                            "form_key": window.FORM_KEY
                         }
                     })
-                    .done(function(result){
-                        $.ajax({
-                            showLoader: true,
-                            type: 'DELETE',
-                            url: 'https://app_api.pcapredict.com/api/authtoken',
-                            processData: false,
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': 'Basic ' + auth
-                            }
-                        })
-                        .done(function(result) {
-                            // done, reload view.
-                            if(console && console.log) console.log("Logged out successfully");
-
-                            window.location.reload(true);
-                        })
-                        .fail(function(result){
-                            // Not ideal but we have logged out now in magento.
-                            if(console && console.log) console.log("Error logging out");
-
-                            window.location.reload(true);
-                        })
-                    })
-                    .fail(function(result){
-                        $('.pcapredict-message')
-                            .text('Sorry, there was a problem logging out from your PCA Predict account within magento.')
-                            .removeClass('pcapredict-message-success')
-                            .addClass('pcapredict-message-error')
-                            .slideDown(500, function(){
-                                hidePCAMessage(5000, 500);
-                            });
-                    })
-                    .always(function(){
-                        hidePCAMessage(5000, 500);
-                    });
+                    .done(function(_) { tryLogoutFromServer(auth); })
+                    .fail(failMagentoCall)
+                    .always(function(_) { hideMessageAndReload(2000); });
                 });
 
                 $('#customjavascript_front').bind('input propertychange', function() {
@@ -405,13 +354,68 @@ $moduleVersion = $pcaSettings->getModuleVersion();
                     }
                 }
 
-                var hidePCAMessage = function(delayMs, animateTime) {
+                // hides the message banner after a delay and animates it.
+                var hidePCAMessage = function(delayMs, animateTime, funcToRunAfter) {
                     delayMs = delayMs || 0;
                     animateTime = animateTime || 0;
                     setTimeout(function(){
                         $('.pcapredict-message').slideUp(animateTime);
+                        if (typeof(funcToRunAfter) == "function"){
+                            funcToRunAfter();
+                        }
                     }, delayMs);
                 }
+
+                // Tries to logout from the server. Not needed to log out of the extension.
+                var tryLogoutFromServer = function(auth) {
+
+                    $.ajax({
+                        showLoader: true,
+                        type: 'DELETE',
+                        url: 'https://app_api.pcapredict.com/api/authtoken',
+                        processData: false,
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Basic ' + auth
+                        }
+                    })
+                    .done(function(_) {
+                        if(console && console.log) console.log("Logged out successfully");
+                    })
+                    .fail(function(_){
+                        if(console && console.log) console.log("Error logging out from server");
+                    })
+                    .always(function(_) {
+                        $('.pcapredict-message')
+                            .text("Logging out of the extension...")
+                            .removeClass('pcapredict-message-error')
+                            .addClass('pcapredict-message-success')
+                            .slideDown(500);
+                    });
+                }
+                
+                // Default message if the ajax call to a magento resource does not succeed.
+                var failMagentoCall = function(_) {
+
+                    $('.pcapredict-message')
+                        .text("There was a problem while making a call to a magento resource for the extension")
+                        .removeClass('pcapredict-message-success')
+                        .addClass('pcapredict-message-error')
+                        .slideDown(500);
+                }
+
+                // Reloads the view with message close transition before.
+                var hideMessageAndReload = function(messageInViewMs) {
+                    hidePCAMessage(messageInViewMs, 500, function() {  window.location.reload(true); });
+                }
+
+                $("#customCodeBackup").click(function(event){
+                    var front = $('#customjavascript_front').val();
+                    var back = $('#customjavascript_back').val();
+
+                    $(this).attr('download','custom_javascript_backup.txt')
+                        .attr('href',"data:application/octet-stream;base64,"+ btoa("Front-end custom JavaScript\n\n" + front + "\n\nBack-end custom JavaScript\n\n" + back));
+                });
 
                 resetSaveButton();
 

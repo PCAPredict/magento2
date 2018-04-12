@@ -12,9 +12,8 @@ class UpgradeData implements UpgradeDataInterface {
     public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context ) {
         
         // Take all current records and set the current version of the app as the module_version.
-        // We will now fetch a record based on the last created time and not an id.
-        // It was likely that with previous versions, if login/key setup failed at any point it would write a row but go back to the login screen,
-        // thus subsquent attempts caused more rows to be written.
+        // We now fetch a record based on the last created time and not an id.
+        // This means any customer with multiple rows can expire all the session keys and will fix the bug where it was looking for a row with a particular id.
         if (version_compare($context->getVersion(), '2.0.7') < 0) {
 
             $tableName = $setup->getTable('pcapredict_tag_settingsdata');
