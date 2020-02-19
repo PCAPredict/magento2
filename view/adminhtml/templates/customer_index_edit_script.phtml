@@ -21,7 +21,10 @@
             pca.magento.currentUrl = window.location.href;
 
             pca.magento.isElementVisible = function( elem ) {
-                return !!( elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length );
+                if (elem) {
+                    return !!( elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length );
+                }
+                return false;
             };
 
             var backup = {};
