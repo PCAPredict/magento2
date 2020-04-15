@@ -66,7 +66,7 @@ class Index extends Action {
                 }
                 catch(\Exception $ex) 
                 {
-                    var_dump($ex.getMessage);
+                    var_dump($ex->getMessage());
                 }
             }
         }
