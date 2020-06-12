@@ -2,10 +2,10 @@
 
 namespace PCAPredict\Tag\Setup;
 
+use Magento\Framework\DB\Ddl\Table;
 use Magento\Framework\Setup\UpgradeSchemaInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
-use Magento\Framework\DB\Ddl\Table;
 
 // Upgrade will only trigger if the setup_version in the module.xml is increased.
 class UpgradeSchema implements UpgradeSchemaInterface
@@ -13,10 +13,6 @@ class UpgradeSchema implements UpgradeSchemaInterface
     public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context){
         
         $setup->startSetup();
-  
-        if(!$context->getVersion()) {
-            // No previous version found.
-        }
  
         if (version_compare($context->getVersion(), '2.0.7') < 0) {
 
