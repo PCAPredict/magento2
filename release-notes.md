@@ -1,5 +1,12 @@
 # Release notes
 
+## v2.1.0
+
+- bump composer version according to latest tag
+- Supports PHP 7.3 for composer installations
+- Check if input elements exist in different script templates
+
+
 ## v2.0.7
 
 - Reviewed and updated the way we store/clear out credentials and the upgrade process from each version.
