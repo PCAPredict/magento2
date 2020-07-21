@@ -1,12 +1,12 @@
 <?php
-    // Find all .xml layout files that reference this. 
+    // Find all .xml layout files that reference this.
     // Currently it's the front end all over (default.phtml) and the backend on the sales_order_address.phtml.
 
     $pcaSettings = $this->helper('PCAPredict\Tag\Helper\SettingsData');
     $pcaAccCode = $pcaSettings->getAccountCode();
     $pcaCustomJSFront = $pcaSettings->getCustomJavaScriptFront();
 
-    if ($pcaAccCode) { 
+    if ($pcaAccCode) {
 ?>
 
 <script type="text/javascript">
@@ -18,7 +18,7 @@
             a[b] = a[b] || {}; a[b].initial = { accountCode: "<?php echo $pcaAccCode; ?>", host: "<?php echo $pcaAccCode; ?>.pcapredict.com" };
             a[b].on = a[b].on || function () { (a[b].onq = a[b].onq || []).push(arguments) }; var d = c.createElement("script");
             d.async = !0; d.src = e; c = c.getElementsByTagName("script")[0]; c.parentNode.insertBefore(d, c)
-            })(window, document, "pca", "/" + "/<?php echo $pcaAccCode; ?>.pcapredict.com/js/sensor.js");
+          })(window, document, "pca", "/" + "/<?php echo $pcaAccCode; ?>.pcapredict.com/js/sensor.min.js");
 
             pca.magento = pca.magento || {};
             pca.magento.currentUrl = window.location.href;
@@ -62,7 +62,7 @@
             });
 
             // This bit of code was written to accommodate the Magento 2 DOM element fields with the same name and dynamic id's.
-            // We are doing the equivalent of the following : 
+            // We are doing the equivalent of the following :
             // 1) Recording the amount of times the address fields are on the page, e.g. How many times is the "Postcode" element on the page.
             // 2) Taking each set in turn and getting the dynamic id's that relate to the names. e.g. <input name="postcode" id="D6G65BGS" ...
             // 3) For each of those id's we rewrite the mappings for a key. Control[Index].Mappings.Postcode = BGH34DF (pseudo-code)
@@ -100,7 +100,7 @@
             pca.magento.loadPCA = function() {
 
                 pca.magento.reloadPCA();
-                
+
                 // If you login while in the checkout and add a new address, it will show a popup view.
                 var buttons = document.getElementsByTagName('button');
                 for (var b = 0; b < buttons.length; b++) {
@@ -122,7 +122,7 @@
                                 pca.magento.reloadPCA();
                             }
                         });
-                    }                    
+                    }
                 }
 
                 // Logged in user can select an address on billing screen or add a new one.
@@ -133,9 +133,9 @@
                         $(els[i]).off('change.pca').on('change.pca', function(){
                             pca.magento.reloadPCA();
                         });
-                    }                    
+                    }
                 }
-                
+
                 // This is so we can reload the mappings to find the next set of address fields.
                 // NOTE - Monitor Fields and Continual Field Search could potenially remove this.
                 if (pca.magento.checkout) {
@@ -149,13 +149,13 @@
                     window.setTimeout(pca.magento.loadPCA, 500);
                 }
                 else {
-                    window.setTimeout(pca.magento.checkUrlChange, 1000); 
+                    window.setTimeout(pca.magento.checkUrlChange, 1000);
                 }
             };
 
             // Checks for the dynamic fields are on the page - Means we will need to reload the view to perform the dynamic mapping above.
             pca.magento.dynamicMagentoFieldsExist = function() {
-                
+
                 var isDynamicRegExp = new RegExp("^[A-Z0-9]{7}$"); // Magento 2 - 7 character dynamic id's.
                 var col = document.getElementsByTagName("*");
 
@@ -167,14 +167,14 @@
             }
 
             pca.magento.doLoad = function() {
-                // Load when ready.                  
-                if (pca && 
-                    pca.platform && 
+                // Load when ready.
+                if (pca &&
+                    pca.platform &&
                     typeof pca.platform.elementExists === 'function' &&
-                    (pca.platform.getBindingsForService("PLATFORM_CAPTUREPLUS").length > 0 
+                    (pca.platform.getBindingsForService("PLATFORM_CAPTUREPLUS").length > 0
                     || pca.platform.getBindingsForService("PLATFORM_MOBILEVALIDATION").length > 0
                     || pca.platform.getBindingsForService("PLATFORM_EMAILVALIDATION").length > 0)
-                    && (!pca.magento.checkout || pca.magento.dynamicMagentoFieldsExist())) { 
+                    && (!pca.magento.checkout || pca.magento.dynamicMagentoFieldsExist())) {
 
                     window.setTimeout(pca.magento.loadPCA, 500);
                 }
@@ -184,10 +184,10 @@
                 }
             };
 
-            <?php if ($pcaCustomJSFront) echo $pcaCustomJSFront; ?>   
+            <?php if ($pcaCustomJSFront) echo $pcaCustomJSFront; ?>
         })(jQuery);
     });
-  
+
 </script>
 
 <?php } ?>
