@@ -1,6 +1,7 @@
 {
     "name": "pcapredict/tag",
     "description": "Address Validation for Checkout Forms",
+    "abandoned": "loqate/tag",
     "repositories": {
     "magento": {
             "type": "composer",
